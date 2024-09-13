@@ -49,7 +49,6 @@ LANGUAGES.EN = {
 
         'full-shark-level': toTextStyle('Shark','shark') + ' Level',
         'full-shark-rank': toTextStyle('Shark','shark') + ' Rank',
-
         'sharkoid-faith': toTextStyle('Sharkoid Faith','humanoid'),
 
         'curr-top-0-req': x => `Reach <b>${format(x)}</b> total ${toTextStyle('Fish','fish')}`, 
