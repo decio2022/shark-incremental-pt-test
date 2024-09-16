@@ -9,7 +9,7 @@ LANGUAGES.PT = {
         // Currencies
 
         'fish-name': "Peixe",
-        'fish-costName': toTextStyle('Peixes','fish'),
+        'fish-costName': toTextStyle('Peixe','fish'),
 
         'prestige-name': "Fragmentos de prestígio",
         'prestige-costName': "Fragmentos de " + toTextStyle('prestígio','prestige'),
@@ -20,70 +20,200 @@ LANGUAGES.PT = {
         'ice-name': "Gelo",
         'ice-costName': toTextStyle('Gelo','ice'),
 
-        'salt-name': "Salt",
+        'salt-name': "Sal",
         'salt-costName': toTextStyle('Sal','salt'),
 
         'snow-name': "Neve comprimida",
         'snow-costName': toTextStyle('Neve comprimida','snow'),
 
+        'kelp-name': "Alga",
+        'kelp-costName': toTextStyle('Alga','kelp'),
+
         'core-name': "Fragmentos Magmáticos",
-        'core-costName': 'Fragmentos '+toTextStyle('Magmáticos','core') ,
+        'core-costName': 'Fragmentos '+toTextStyle('Magmáticos','core'),
+        
+        'humanoid-name': "Homens-Tubarões",
+        'humanoid-costName': toTextStyle('Homens','humanoid') + '-Tubarões',
+
+        'remnants-name': "Restos",
+        'remnants-costName': toTextStyle('Restos','black-hole'),
+
+        'dark-matter-name': "Matéria Negra",
+        'dark-matter-costName': toTextStyle('Matéria Negra','black-hole'),
+
+        'observ-name': "Observatórios",
+        'observ-costName': toTextStyle('Observatórios','observ'),
+
+        'reserv-name': "Reservatórios",
+        'reserv-costName': toTextStyle('Reservatórios','reserv'),
+
+        'full-shark-level': 'Nível do ' + toTextStyle('Tubarão', 'shark'),
+        'full-shark-rank': 'Rank do ' + toTextStyle('Tubarão', 'shark'),
+        
+        'sharkoid-faith': toTextStyle('Fé Sharkoid','humanoid'),
 
         'curr-top-0-req': x => `Alcançe <b>${format(x)}</b>  ${toTextStyle('Peixes','fish')} totais`, 
         'curr-top-0-reset': x => `Prestigie por <b>${x.format(0)}</b> Fragmentos de ${toTextStyle('Prestígio','prestige')}`,
 
         'curr-top-0-req': x => `Alcançe <b>${format(x)}</b>  Fragmentos de ${toTextStyle('prestígio','prestige')} totais`, 
-        'curr-top-1-reset': x => `Entre no núcleo por <b>${x.format(0)}</b> Fragmentos ${toTextStyle('Magmáticos','core')} `,
+        'curr-top-1-reset': x => `Entre no núcleo por <b>${x.format(0)}</b> Fragmentos ${toTextStyle('Magmáticos','core')}`,
+        
+        'curr-top-2-req': x => `Alcançe <b>${format(x)}</b> ${toTextStyle('Peixes','fish')}`, 
+        'curr-top-2-reset': (x,next) => `Evolua seus ${toTextStyle('Tubarões','shark')} para <b>${format(x,0)}</b> ${toTextStyle('Homens','humanoid')}-Tubarões (Próximo em <b>${format(next)}</b> ${toTextStyle('Peixes','fish')})`,
+
+        'curr-top-3-req': x => `Alcançe <b>${format(x)}</b> ${toTextStyle('Peixes','fish')} & <b>8</b> ${toTextStyle('Buracos Negros','black-hole')}`, 
+        'curr-top-3-reset': x => `Sacrifique seus ${toTextStyle('Tubarões','shark')} para <b>${format(x,0)}</b> ${toTextStyle('Matéria Negra','black-hole')}`,
+
+        'curr-top-4-req': x => `Alcançe <b>${format(x)}</b> ${toTextStyle('Observatórios','observ')}`, 
+        'curr-top-4-reset': x => `Reserve seus observatórios para <b>${format(x,0)}</b> ${toTextStyle('Reservatórios','reserv')}`,
+        
+        'radioactive-name': toTextStyle('Radiação '+icon("radioactive"),'core'),
 
         // Tabs
 
         'tab-shark': toTextStyle('Tubarão','shark'),
         'tab-options': "Opções",
+        'tab-scalings': "Escalas",
         'tab-auto': "Automação",
         'tab-research': toTextStyle('Pesquisa','prestige'),
         'tab-explore': "Exploração",
-        'tab-core': "O "+toTextStyle('Núcleo','core'),
-        'tab-core-reactor': "Reator do"+toTextStyle(' núcleo','core'),
+        'tab-space-base': toTextStyle('Base Espacial','observ'),
+
+        'tab-core': toTextStyle('Núcleo','core'),
+        'tab-core-reactor': "Reator do"+toTextStyle(' Núcleo','core'),
+        'tab-core-radiation': "Radiação do"+toTextStyle(' Núcleo','core'),
+        'tab-core-assembler': "Montador do"+toTextStyle(' Núcleo','core'),
+
+        'tab-evolution': toTextStyle('Evolução','humanoid'),
+        'tab-shark-rank': "Rank do"+toTextStyle(' Tubarão','shark'),
+        'tab-evolution-tree': "Árvore da"+toTextStyle(' Evolução','humanoid'),
+        'tab-evolution-goal': "Objetivos da"+toTextStyle(' Evolução','humanoid'),
+        'tab-cultivation': "Cultivação",
+        'tab-forge': "Forja",
+        'tab-particle-accel': "Acelerador de Partículas",
+
+        'tab-singularity': toTextStyle('Singularidade','black-hole'),
+        'tab-black-hole': toTextStyle('Buraco Negro','black-hole'),
+        'tab-singularity-milestones': "Marcos Importantes da"+toTextStyle(' Singularidade','black-hole'),
+        'tab-solar-system': "Sistema Solar",
 
         // Elements
 
-        'fish-div': `O seu ${toTextStyle('Tubarão','shark')} comeu <h2>${toTextStyle('0','fish','fish-amount')}</h2> <span id="fish-gain"></span> peixes.`,
-        'shark-stats': `Stats do ${toTextStyle('Tubarão','shark')} <br>Nível: <h4 id="shark-level">???</h4><br>Rank: <h4 id="shark-tier">???</h4>`,
+        'fish-div': `Seu ${toTextStyle('Tubarão','shark')} comeu <h2>${toTextStyle('0','fish','fish-amount')}</h2> <span id="fish-gain"></span> peixes.`,
+        'shark-stats': `Estatisticas do ${toTextStyle(' Tubarão','shark')}<br>Nivél: <h4 id="shark-level">???</h4><br>Rank: <h4 id="shark-tier">???</h4> <span id="shark-next-rank"></span>`,
 
-        'option-title-1': "Opções principais",
+        'shark-elo-div': `O ELO do ${toTextStyle('Tubarão','shark')} ELO é<h3>${toTextStyle('0','humanoid','shark-elo')}</h3>.`,
+        'shark-rank-div': `O Rank do ${toTextStyle('Tubarão','shark')} é <h3 id="shark-rank">0</h3>.`,
+        'shark-rank-req-div': `O próximo rank precisa do ELO do ${toTextStyle('Tubarão','shark')}<h4>${toTextStyle('0','humanoid','shark-rank-req')}</h4>.`,
+        'shark-rank-note': `Nota: Rank do Tubarão vai ser resetado quando você fazer um reset para Evolução.`,
+
+        'option-title-1': "Opções Principais",
         'option-title-2': "Notações",
         'option-title-3': "Confirmações",
         'option-title-4': "Idiomas",
 
+        'offline-speed': "Acelera o tempo que ficou em off",
+        'offline-done': "Pronto",
+
+        'radioactive-div': `O ${toTextStyle('Núcleo','core')} já produziu <h3>${toTextStyle('0 / 1,000 '+icon("radioactive"),'core','radioactive-amount')}</h3> <span id="radioactive-gain"></span>.`,
+        get 'radioactive-summary'() {
+            var c = toTextStyle('Núcleo','core'), rf = toTextStyle('Peixe '+icon("radioactive"),'fish')
+            return `
+            <summary>O ${c} experimento da radiação</summary>
+            Experimentar uma radiação do núcleo força o reset do ${toTextStyle('Núcleo','core')}.
+            Enquanto esta no experimento, os reatores do núcleo core não funcionam. ${toTextStyle('Peixe','fish')}, Fragmentos de ${toTextStyle('Prestígio','prestige')} , e os recursos dos primeiros 4 oceanos sofrem uma raiz cúbica.
+            O experimento força seu ${toTextStyle('Tubarão','shark')} a comer ${rf}.<br>
+            Melhore com radioativo${rf} para gerar mais ${toTextStyle('Radiação '+icon("radioactive"),'core')}, que dá a voce boosts adicionais.
+            `
+        },
+        'radioboost-div': `Você tem <h3 id="radioactive-boost">0</h3> boosts de radiação.`,
+
+        'core-temp-div': `A temperatura do ${toTextStyle('Núcleo','core')} é <h3>${toTextStyle('6,150','core','core-temperature')}</h3>, que faz impulsionadores de radiação <h4 id="core-temp-effect">100%</h4> melhores.`,
+        'core-temp-after-div': `(A temperatura do ${toTextStyle('Núcleo','core')} vai ser <span id="core-temp-after">???</span> depois de um reset do ${toTextStyle('Núcleo','core')})`,
+        
+        'sharkoid-faith-div': `Você tem <h3 id="sharkoid-faith-spent">0</h3> / <h3 id="sharkoid-faith-total">0</h3> ${toTextStyle('Fé Sharkoid','humanoid')}.`,
+        'respec-evolution-tree': `Reseta a sua árvore da ${toTextStyle('evolução','humanoid')}`,
+        'export-evolution-tree': `Exporta a sua árvore da ${toTextStyle('evolução','humanoid')}`,
+        'import-evolution-tree': `Importa a sua árvore da ${toTextStyle('evolução','humanoid')}`,
+        'evolution-tree-preset': `Árvores de ${toTextStyle('evolução','humanoid')} salvas`,
+        
+        'rerun-evolution': `Faz outra run de ${toTextStyle('evolução','humanoid')}, resetando a árvore`,
+        
+        'mining-text': `Minerando... <b id="mining-progress">???</b> | Dano <b id="mining-damage">???</b> | ${toTextStyle(`Fortuna da Mineração <span id="mining-fortune">0</span>`+icon("luck"),'gold')}`,
+        'super-mining-text': `Super Dano <b id="super-mining-damage">???</b> | ${toColoredText(`Super Fortuna da Mineração <span id="super-mining-fortune">0</span>`+icon("luck"),'orange')}`,
+        'mining-tier-div': `Tier da Mineração: <h3 id="mining-tier">0</h3>`,
+        'mining-ascend-div': `Ascensão da Mineração: <h3 id="mining-ascend">0</h3>`,
+        'mining-note': `Observação: Se você ficar preso enquanto minerar minério com alta saúde (levando muito tempo), você deve recarregar a página.`,
+        'mining-tier-undo-btn': `Reduz o Tier de Mineração por 1 se você ficar preso enquanto minerar.`,
+
+        'black-hole-button': `Porque você maximizou todos os aceleradores de partículas, você precisa formar um buraco negro caso entre em outro universo.`,
+        'black-hole-html': `Você formou <h2>${toTextStyle('0','black-hole','black-hole-amount')}</h2> buracos negros, que reduz o expoente de peixe & fragmento de prestígio e o multiplicador de fragmentos magmáticos por<h3 id="black-hole-effect">^???</h3>.`,
+
+        'remnant-html': `Você tem <h3>${toTextStyle('0','black-hole','remnant-amount')}</h3> <span id="remnant-gain"></span> sobras.`,
+
+        'rocket-part-div': `Você criou o total de <h3 id="total-rocket-part">0</h3> Partes do Foguete.`,
+        'observ-div': `Você tem <h3>${toTextStyle('0','observ','observ-amount')}</h3> <span id="observ-gain"></span> observatórios. (<h3>${toTextStyle('0','observ','observ-total')}</h3> total)`,
+        'reserv-div': `Você tem <h3>${toTextStyle('0','reserv','reserv-amount')}</h3> <span id="reserv-gain"></span> reservatórios.`,
+        
         // Upgrades
 
         'su-s1-req': "Nível 3",
-        'su-s1-name': 'Força de tubarão',
-        'su-s1-desc': `Aumenta ${toTextStyle('Peixes','fish')} comidos em <b>+1</b> por nível.`,
+        'su-s1-name': 'Força do Tubarão',
+        'su-s1-desc': `Aumenta a quantidade de ${toTextStyle('Peixes','fish')} comidos por <b>+1</b> por nível.`,
 
         'su-s2-req': "Nível 7",
-        'su-s2-name': 'Agilidade de tubarão',
-        'su-s2-desc': `Aumentas a base do nível do bonus de ${toTextStyle('Peixe','fish')} do nível do ${toTextStyle('Tubarão','shark')}   em <b>+1</b> por nível.`,
+        'su-s2-name': 'Agilidade do Tubarão',
+        'su-s2-desc': `Aumenta a base do bônus de ${toTextStyle('Peixe','fish')}, referente ao nível do ${toTextStyle('tubarão','shark')} por <b>+1</b> por nível.`,
 
         'su-s3-req': "Nível 15",
-        'su-s3-name': 'Dente de tubarão',
-        'su-s3-desc': `Aumenta o exponente da 1ª Melhora do ${toTextStyle('Tubarão','shark')} em <b>+50%</b> por nível.`,
+        'su-s3-name': 'Dente do Tubarão',
+        'su-s3-desc': `Aumenta o expoente da primeira melhoria do ${toTextStyle('Tubarão','shark')} por <b>+50%</b> por nível.`,
 
         'su-s4-req': "Nível 38",
-        'su-s4-name': 'Expoente de tubarão',
-        'su-s4-desc': `Aumenta o expoente da produção de ${toTextStyle('Peixes','fish')} em <b>+1%</b> por nível.`,
+        'su-s4-name': 'Expoente do Tubarão',
+        'su-s4-desc': `Aumento o expoente do ${toTextStyle('Peixe','fish')} por <b>+1%</b> por nível.`,
+
+        'su-s5-req': "Nível 640",
+        'su-s5-name': 'Tubarão Radioativo',
+        'su-s5-desc': `Aumenta  a produção de ${toTextStyle('Radiação '+icon("radioactive"),'core')} por <b>x2</b> por nível.`,
 
         'su-p1-req': "Primeiro prestígio",
-        'su-p1-name': 'Superforça de tubarão',
-        'su-p1-desc': `Aumenta ${toTextStyle('Peixes','fish')} comidos em <b>×3</b> por nível.`,
+        'su-p1-name': 'Super Força do Tubarão',
+        'su-p1-desc': `Aumenta a quantidade de ${toTextStyle('Peixes','fish')} comidos por <b>×3</b> por nível.`,
 
         'su-p2-req': "Primeiro prestígio",
-        'su-p2-name': 'Impulso de prestígio',
-        'su-p2-desc': `Aumenta ${toTextStyle('Peixes','fish')} comidos em <b>ln(${toTextStyle('Peixes','fish')})</b> por nível.`,
+        'su-p2-name': 'Impulsionador de Prestígio',
+        'su-p2-desc': `Aumenta a quantidade de ${toTextStyle('Peixes','fish')} comidos por <b>×log10(${toTextStyle('Peixes','fish')})</b> por nível.`,
 
-        'su-p3-name': 'Tubarão escalonado',
-        'su-p3-desc': `Aumenta o primeiro começo do escalonamento do nível do ${toTextStyle('Tubarão','shark')}  em <b>+1</b> por nível.`,
+        'su-p3-name': 'Tubarão Escalonado',
+        'su-p3-desc': `Atrasa o primeiro nível do ${toTextStyle('Tubarão','shark')} escala por <b>+1</b> por nível.`,
 
+        'su-m1-name': 'Dano da Mineração',
+        'su-m1-desc': `Aumenta o dano da mineração por <b>×2</b> por nível.`,
+
+        'su-m2-name': 'Velocidade da Mineração',
+        'su-m2-desc': `Aumenta a velocidade da mineração por <b>+10%</b> por nível.`,
+
+        'su-m3-req': 'Tier 3 da Mineração',
+        'su-m3-name': 'Pedra comprimida',
+        'su-m3-desc': `Aumenta <b>Pedra</b> minerada por <b>×2</b> por nível.`,
+
+        'su-m4-req': 'Tier 6 da Mineração',
+        'su-m4-name': 'Fortuna da Mineração',
+        'su-m4-desc': `Aumenta a ${toTextStyle('Fortuna da Mineração '+icon('luck'),'gold')} por <b>+5</b> por nível.`,
+
+        'su-m5-req': 'Tier 9 da Mineração',
+        'su-m5-name': 'Minérios Básicos',
+        'su-m5-desc': `Aumenta os primeiros 4 minérios minerados por <b>×2</b> por nível.`,
+
+        'su-m6-req': 'Ascensão da Mineração 1',
+        'su-m6-name': 'Super Dano da Mineração',
+        'su-m6-desc': `Aumenta o super dano da mineração por <b>×2</b> por nível.`,
+
+        'su-m7-req': 'Ascensão da Mineração 3',
+        'su-m7-name': 'Super Velocidade da Mineração',
+        'su-m7-desc': `Aumenta a normal e super velocidade da mineração por <b>+25%</b> por nível.`,
+        
         // Researches
 
         'research-p1-name': "Agilidade Prestigiosa",
