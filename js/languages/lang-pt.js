@@ -52,6 +52,9 @@ LANGUAGES.PT = {
         
         'sharkoid-faith': toTextStyle('Fé Sharkoid','humanoid'),
 
+        'traject-name': "Trajetos",
+        'traject-costName': toTextStyle('Trajetos','traject'),
+
         'curr-top-0-req': x => `Alcançe <b>${format(x)}</b>  ${toTextStyle('Peixes','fish')} totais`, 
         'curr-top-0-reset': x => `Prestigie por <b>${x.format(0)}</b> Fragmentos de ${toTextStyle('Prestígio','prestige')}`,
 
@@ -66,6 +69,9 @@ LANGUAGES.PT = {
 
         'curr-top-4-req': x => `Alcançe <b>${format(x)}</b> ${toTextStyle('Observatórios','observ')}`, 
         'curr-top-4-reset': x => `Reserve seus observatórios para <b>${format(x,0)}</b> ${toTextStyle('Reservatórios','reserv')}`,
+
+        'curr-top-5-req': x => `Alcançe <b>${format(x)}</b> ${toTextStyle('Reservatórios','reserv')}`, 
+        'curr-top-5-reset': x => `Viaje para <b>${format(x,0)}</b> ${toTextStyle('Trajetos','traject')}`,
         
         'radioactive-name': toTextStyle('Radiação '+icon("radioactive"),'core'),
 
@@ -154,6 +160,7 @@ LANGUAGES.PT = {
         'rocket-part-div': `Você criou o total de <h3 id="total-rocket-part">0</h3> Partes do Foguete.`,
         'observ-div': `Você tem <h3>${toTextStyle('0','observ','observ-amount')}</h3> <span id="observ-gain"></span> observatórios. (<h3>${toTextStyle('0','observ','observ-total')}</h3> total)`,
         'reserv-div': `Você tem <h3>${toTextStyle('0','reserv','reserv-amount')}</h3> <span id="reserv-gain"></span> reservatórios.`,
+        'traject-div': `You have <h3>${toTextStyle('0','traject','traject-amount')}</h3> <span id="traject-gain"></span> trajectories.`,
         
         // Upgrades
 
@@ -239,11 +246,20 @@ LANGUAGES.PT = {
         'research-p7-name': "Melhores Recursos I",
         'research-p7-desc': `o efeito de ${toTextStyle("Corais",'coral')} e ${toTextStyle("Gelo",'ice')}  é melhor.`,
 
+        'research-p8-name': "Nível do Tubarão 3.0",
+        'research-p8-desc': `Reduz ainda mais a base do requerimento do Nível do ${toTextStyle("Tubarão",'shark')} por 1.`,
+
+        'research-p9-name': "Impulsionador de Prestígio mais barato",
+        'research-p9-desc': `Reduz o escalonamento da dilatação do 'Impulsionador de Prestígio' por <b>-0.05</b> por nível.`,
+
         'research-e1-name': "Sinergia oceânica I",
         'research-e1-desc': `${toTextStyle("Sal",'salt')} Impulsiona a quantidade de ${toTextStyle("Corais",'coral')} gerada.`,
 
         'research-e2-name': "Sinergia oceânica II",
         'research-e2-desc': `${toTextStyle("Neve Comprimida",'snow')} Impulsiona a quantidade de ${toTextStyle("Gelo",'ice')} gerado.`,
+
+        'research-e3-name': "Automação da Exploração",
+        'research-e3-desc': `Automaticamente ganha a base dos primeiros <b>X</b> oceanos sem precisar explorar.`,
 
         'research-c1-name': "Mantedor C de pesquisa",
         'research-c1-desc': `Mantenha ${toTextStyle("Pesquisa",'prestige')} ao entrar no ${toTextStyle('Núcleo','core')}.`,
@@ -326,6 +342,15 @@ LANGUAGES.PT = {
         'auto-su-name': `Auto melhoria '${toTextStyle("Peixe","fish")}' de ${toTextStyle("Tubarão",'shark')}  `,
         'auto-spu-name': `Auto melhoria '${toTextStyle("Prestígio","prestige")}' de ${toTextStyle("Tubarão",'shark')} `,
         'auto-eu-name': `Auto melhoria de Exploração`,
+        'auto-core_reactor-name': `Auto-${toTextStyle("Núcleo","core")} do Reator`,
+        'auto-core_radiation-name': `Auto-Radiação do ${toTextStyle("Núcleo","core")}`,
+        'auto-radioactive_boosts-name': `Auto-Impulsionadores Radioativos`,
+        'auto-mining_upgs-name': `Auto-Melhoria de Mineração do ${toTextStyle("Tubarão","shark")}`,
+        'auto-humanoid-name': `Auto-${toTextStyle("Homens","humanoid")}-Tubarões`,
+        'auto-research-name': `Auto-Pre-Pesquisa da ${toTextStyle("Singularidade","black-hole")}`,
+        'auto-mining_tier-name': `Auto-Tier da Mineração`,
+        'auto-remnant-name': `Auto-Melhorias de ${toTextStyle("Sobras","black-hole")}`,
+        'auto-faith-name': `Auto-${toTextStyle("Fé Sharkoid","humanoid")}`,
 
         'auto-cost': (D,cost,name) => `Diminua o intervalo em ${formatReduction(D,0)}.<br>Custo: ${format(cost,0)} ${name}`,
         'auto-interval': (a,b,maxed) => `Intervalo: ${format(a,3)}s`+(maxed ? "" :` ➜ ${format(b,3)}s`),
@@ -342,6 +367,30 @@ LANGUAGES.PT = {
 
         'progress-5-text': r => `Alcançe ${format(r)} Fragmentos de ${toTextStyle('prestígio','prestige')} totais`, 
         get 'progress-5-cond-text'() { return `Entre o ${toTextStyle('Núcleo','core')}` },
+
+        'progress-6-text': r => `Alcançe ${format(r)} Fragmentos ${toTextStyle('Magmaticos','core')} para desbloquear o proximo conteudo do ${toTextStyle('Núcleo','core')}`, 
+        'progress-7-text': r => `Alcançe o Nível do ${toTextStyle('Tubarão','shark')} ${format(r,0)} para desbloquear o proximo tipo de oceano`, 
+        'progress-8-text': r => `Alcançe ${format(r)} Fragmentos ${toTextStyle('Magmaticos','core')} para desbloquear o proximo conteudo do ${toTextStyle('Núcleo','core')}`, 
+        'progress-9-text': r => `Alcançe ${format(r)} ${toTextStyle('Peixes','fish')} no total para desbloquear os novos reatores do ${toTextStyle('Núcleo','core')}`, 
+
+        'progress-10-text': r => `Alcançe ${format(r)} ${toTextStyle('Peixes','fish')} no total`, 
+        get 'progress-10-cond-text'() { return `Evolua seus ${toTextStyle('Tubarões','shark')}` },
+
+        'progress-11-text': r => `Alcançe ${format(r,0)} ${toTextStyle('Homens','humanoid')}-tubarões para desbloquear o proximo conteudo da ${toTextStyle('Evolução','humanoid')}`, 
+        'progress-12-text': r => `Alcançe ${format(r,0)} ${toTextStyle('Homens','humanoid')}-tubarões para desbloquear o proximo conteudo da ${toTextStyle('Evolução','humanoid')}`, 
+        'progress-13-text': r => `Chega ao Tier de Mineração ${format(r,0)} para desbloquear a proxima linha da árvore da ${toTextStyle('Evolução','humanoid')}`, 
+        'progress-14-text': r => `Chega ao Tier de Mineração ${format(r,0)} para desbloquear o proximo conteudo da ${toTextStyle('Evolução','humanoid')}`, 
+        'progress-15-text': r => `Chega ao Tier de Mineração ${format(r,0)} para desbloquear o proximo conteudo da ${toTextStyle('Evolução','humanoid')}`,
+
+        'progress-16-text': r => `Encha ${format(r,0)} aceleradores de particula`, 
+        get 'progress-16-cond-text'() { return `Forma ${toTextStyle('Buraco Negro','black-hole')}` },
+
+        'progress-17-text': r => `Forma ${format(r,0)} ${toTextStyle('Buracos Negros','black-hole')}`,
+
+        'progress-18-text': r => `Alcançe ${format(r)} ${toTextStyle('Peixe','fish')} no total`, 
+        get 'progress-18-cond-text'() { return `Faça um ${toTextStyle('Sacrificio','black-hole')}` },
+
+        'progress-19-text': r => `Alcançe ${format(r)} ${toTextStyle('Matéria Negra','black-hole')} no total`,
 
         'maxed-progress': "Todas as funcionalidades desbloqueadas!",
 
@@ -362,13 +411,56 @@ LANGUAGES.PT = {
             return `
             <h3>O ${c}</h3><br>
             O ${c} é a segunda camada de reinício. Entrar no núcleo redefine tudo que ${p} redefine, quanto Fragmentos de ${p}, melhorias de ${p}, ${toTextStyle('Pesquísa','prestige')} (quase), and Exploração por Fragments ${m} ,
-            unlocking the ${c} reactor for the first time.<br>
+            desbloqueando o reator do ${c} pela primeira vez.<br>
             <img src="textures/Magmatic.png"><br>
             Você tem certeza que gostaria de entrar no núcleo?
             `
         },
         
         // Other
+        
+        'scalings': {
+            'shark_level' : `Nível do Tubarão`,
+            'shark_rank' : `Rank do Tubarão`,
+            'su_s3' : `Melhoria "Dente do Tubarão"`,
+            'su_s4' : `Melhoria "Expoente do Tubarão"`,
+            'su_m1' : `Melhoria "Dano da Mineração"`,
+            'su_m3' : `Melhoria "Pedra comprimida"`,
+            'su_m5' : `Melhoria "Minérios Basicos"`,
+            'cr_boost' : `Impulsos Radioativos`,
+            'mining_tier' : `Tier da Mineração`,
+            'mining_ascend' : `Ascensão da Mineração`,
+            'remnant_upg' : `Melhorias de Sobra`,
+        },
+        'scaling-start': "Começa em",
+        'scaling-mode': {
+            "L": x => `<b>${x}</b> linearmente`,
+            "D": x => `<b>${x}</b> ao expoente`,
+        },
+        'scaling-info': `Escalas vão aparecer quando você chegar nelas. <b>N</b> - Quantidade, <b>S</b> - Começo`,
+
+        'shark-bonus-remnants': x => `+${x.format(0)} ${toTextStyle('Sobras','black-hole')}`,
+
+        'shark-overpopulation': (x,y) => `Por causa da superpopulação do ${toTextStyle('Tubarão','shark')} em <h4>${toTextStyle(format(y),'fish')}</h4>, ${toTextStyle('Peixe','fish')} comido, ganho de ${toTextStyle('Peixe','fish')} é reduzido por <h4>${format(x,3)}√</h4>.`,
+
+        'shark-rank-bonuses': {
+            fish: x => `${formatPow(x)} ${toTextStyle('Peixe','fish')}`,
+            prestige: x => `${formatPow(x)} Fragmento de ${toTextStyle('Prestígio','prestige')}`,
+            mining_damage: x => `${formatMult(x)} Dano da Mineração`,
+            so: x => `${formatPow(x)} Atraso da superpopulação do ${toTextStyle('Tubarão','shark')}`,
+            vibranium: x => `${formatMult(x)} <b>Vibranium</b>`,
+            remnants: x => `${formatMult(x)} ${toTextStyle('Sobras','black-hole')}`,
+        },
+
+        'reward': "Recompensa",
+        'new-preset': "Novo Preset",
+        'maxed': "Maximizado",
+        'difficulty': "Dificuldade",
+
+        'remove': "Remova",
+        'overwrite-current': "Substitir Atual",
+        'load': "Carregar",
+        'force-load': "Forcar Carregamento",
 
         'upgrade-shark': x => `Melhore nível de ${toTextStyle('Tubarão','shark')}<br>Custo: ${x.format(0)} ${toTextStyle('Peixes','fish')}`,
         'shark-bonus-fish': x => `+${x.format(0)} produção base dos ${toTextStyle('Peixes','fish')} `,
@@ -418,5 +510,8 @@ LANGUAGES.PT = {
 
         'confirm-prestige': "Prestígio",
         'confirm-core': "Entre no núcleo",
+        'confirm-humanoid': "Evolua seu Tubrão",
+        'confirm-black-hole': "Forma o Buraco Negro",
+        'confirm-sacrifice': "Sacrifica seus Tubarões",
     },
 }
