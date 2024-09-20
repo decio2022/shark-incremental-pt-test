@@ -762,7 +762,7 @@ LANGUAGES.PT = {
         ],
 
         'solar-system-list': {
-            'sun':     ["Sol",`???`,`???`],
+            'sun':     ["Sun",`The Sun is a star that sits at the center of our solar system. It is made up mostly of hydrogen and helium and is the main source of light and heat for Earth and the other planets in the system. The Sun also creates the conditions for life on Earth by providing photosynthesis and climatic conditions. The Sun is huge. Its diameter is 109 times the diameter of the Earth, and its mass is 330,000 times the mass of the Earth. The distance between the Earth and the Sun is 150 million kilometers, so the Sun seems so small to us.`,`Unlock the next layer (NYI). The multiplier of ${toTextStyle('Sharkoid Faith','humanoid')} is doubled again.`],
             'mercury': ["Mercúrio",`Mercúrio é o menor planeta do sistema solar e o mais próximo do Sol. Ele é nomeado em homenagem ao deus romano antigo do comércio, porque se move pelo céu mais rapidamente do que os outros planetas. Mercúrio é coberto por crateras de impacto e é semelhante à Lua em aparência, indicando uma falta de atividade geológica interna ao longo do último bilhão de anos. O planeta tem quase nenhuma atmosfera, então sua temperatura de superfície varia mais do que a de qualquer outro planeta no sistema solar.`,`As 3 primeiras escalas dos impulsos radioativos são atrasado em ×10. Multiply ${toTextStyle('Observatories','observ')} generation by 10 again.`],
             'venus':   ["Vênus",`Vênus é o segundo planeta mais próximo do Sol e o sexto maior do Sistema Solar. É nomeado em homenagem à antiga deusa romana do amor. Vênus possui uma atmosfera densa composta por mais de 96% de dióxido de carbono. A temperatura média da superfície de Vênus é de 735 K (462 °C), tornando-o o planeta mais quente do sistema solar. Vênus não possui satélites naturais. No céu da Terra, é o terceiro corpo celeste mais brilhante, depois do Sol e da Lua.`,`Passivamente gera 100% do atual ${toTextStyle('Homens','humanoid')}-tubarões como ${toTextStyle('Homens','humanoid')}-tubarões, mas auto-${toTextStyle('Homem','humanoid')}-tubarão não mais funciona. Melhora ${toTextStyle('Homem','humanoid')}-tubarão drasticamente, e a terceira escala do rank do ${toTextStyle('Tubarão','shark')} é atrasada em ×2. Multiplica a geração de ${toTextStyle('Observatórios','observ')} em 10.`],
             'earth':   ["Terra",`???`,`???`],
@@ -772,7 +772,7 @@ LANGUAGES.PT = {
             'saturn':  ["Saturno",`Saturno é o sexto planeta a partir do Sol e o segundo maior planeta do sistema solar, depois de Júpiter. Saturno é classificado como um gigante gasoso porque é composto principalmente de hidrogênio e hélio. O planeta é nomeado em homenagem ao deus romano da agricultura. Saturno é cercado por anéis compostos por partículas de gelo, elementos pesados e poeira. O planeta possui 146 satélites conhecidos, sendo o maior deles Titã. Saturno tem um campo magnético planetário e um sistema de anéis proeminente.`,`Desbloqueia uma nova linha de reatores do ${toTextStyle('Núcleo','core')}. <i>Esses reators não são resetado por Evolução ou depois, mas não são afetados pela melhoria de ${toTextStyle('Sobra','black-hole')} “Meia-vida”.</i>`],
             'uranus':  ["Urano",`Urano é o sétimo planeta mais distante do Sol no sistema solar. Foi descoberto em 1781 pelo astrônomo inglês William Herschel e nomeado em homenagem ao deus grego do céu, Urano. Urano foi o primeiro planeta descoberto na era moderna e com a ajuda de um telescópio. Urano é o terceiro maior planeta em diâmetro e o quarto maior em massa no sistema solar. É composto principalmente de gelo e rocha, e sua atmosfera contém hidrogênio, hélio e metano. Urano possui um sistema de anéis e 28 satélites. O eixo de rotação de Urano está "deitado de lado", fazendo com que o planeta orbite o Sol, alternadamente voltando seus polos norte e sul em direção a ele.`, `Remova a superpopulação do ${toTextStyle('Tubarão','shark')}. O multiplicador de ${toTextStyle('Fé Sharkoid','humanoid')} é dobrada.`],
             'neptune': ["Netuno",`Netuno é o oitavo e mais distante planeta do Sistema Solar. Sua distância média do Sol é de 4,5 bilhões de quilômetros. Netuno é um dos planetas gigantes, com 17 vezes a massa da Terra. É o quarto em diâmetro equatorial, sendo 3,9 vezes maior que a Terra. A atmosfera de Netuno é semelhante às camadas gasosas de outros planetas principais do sistema solar. Ela é composta principalmente de hidrogênio e hélio, com misturas de metano, água, amônia e outros compostos. Netuno é considerado um dos planetas mais frios do sistema solar, com uma temperatura média que varia em torno de -200 °C. A atmosfera de Netuno possui os ventos mais fortes de qualquer planeta do sistema solar.`,`Desbloqueia a ${toTextStyle('Constelação','star')} que melhora o ${toTextStyle('Buraco Negro','black-hole')} ainda mais para uma recompensa poderosa.`],
-            'pluto':   ["Plutão",`???`,`???`],
+            'pluto':   ["Pluto",`Pluto is the largest known dwarf planet in the solar system, a trans-Neptunian object and the tenth most massive celestial body orbiting the Sun after the eight planets and Eridas. It is composed of rock and ice and has a mass about six times smaller than the mass of the Moon and a volume about three times smaller. Pluto has a large eccentricity of orbit and a large inclination to the ecliptic plane. Because of this, it is approaching the Sun at a distance of 29.7 a.u. and moving away at 49.3 a.u.`,`Unlock more ${toTextStyle('Remnant','black-hole')} upgrades again. ${toTextStyle('Constellation','star')} resources no longer get reset.`],
         },
         
         'build-rocket-part': x => `Construa ${x} Partes do Foguete.`,
@@ -885,6 +885,16 @@ LANGUAGES.PT = {
             Você tem certeza que você quer entrar em outro universo?
             `
         },
+        get 'reset-sacrifice-message'() {
+            let e = toTextStyle('Sacrifice','black-hole'), c = toTextStyle('Black Hole','black-hole')
+            return `
+            <h3>The ${e}</h3><br>
+            The ${e} is the reset mini-layer.
+            Sacrificing your sharks resets everything the ${c} does, as well as current black holes (except the first 7 milestones), remnants, remnant upgrades, and some research for ${toTextStyle('Dark Matter','black-hole')}.<br>
+            <img src="textures/sacrifice.png"><br>
+            Are you sure you want to sacrifice your sharks?
+            `
+        },
         
         // Other
         
@@ -936,6 +946,7 @@ LANGUAGES.PT = {
         'shark-bonus-prestige': x => `${formatMult(x)} Fragmento de ${toTextStyle('Prestígio','prestige')} `,
         'shark-bonus-core': x => `${formatMult(x)}  Fragmentos ${toTextStyle('Magmáticos','core')}`,
 
+        'total': "Total",
         'level': "Nível",
         'effect': "Efeito",
         'cost': "Custo",
@@ -943,6 +954,8 @@ LANGUAGES.PT = {
         'require': "Requer",
         'next-at': "Próximo em",
         'depth': "Profundidade",
+        'you-have': "You have",
+
         
         'research-afford': bool => bool ? "Comprar" : "Não se pode comprarr",
         'research-bought': bool => bool ? `<b>Comprado</b>` : `<b>Não comprado</b>`,
