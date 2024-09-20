@@ -35,8 +35,8 @@ LANGUAGES.PT = {
         'humanoid-name': "Homens-Tubarões",
         'humanoid-costName': toTextStyle('Homens','humanoid') + '-Tubarões',
 
-        'remnants-name': "Restos",
-        'remnants-costName': toTextStyle('Restos','black-hole'),
+        'remnants-name': "Remanescentes",
+        'remnants-costName': toTextStyle('Remanescentes','black-hole'),
 
         'dark-matter-name': "Matéria Negra",
         'dark-matter-costName': toTextStyle('Matéria Negra','black-hole'),
@@ -157,7 +157,7 @@ LANGUAGES.PT = {
         'black-hole-button': `Porque você maximizou todos os aceleradores de partículas, você precisa formar um buraco negro caso entre em outro universo.`,
         'black-hole-html': `Você formou <h2>${toTextStyle('0','black-hole','black-hole-amount')}</h2> buracos negros, que reduz o expoente de peixe & fragmento de prestígio e o multiplicador de fragmentos magmáticos por<h3 id="black-hole-effect">^???</h3>.`,
 
-        'remnant-html': `Você tem <h3>${toTextStyle('0','black-hole','remnant-amount')}</h3> <span id="remnant-gain"></span> sobras.`,
+        'remnant-html': `Você tem <h3>${toTextStyle('0','black-hole','remnant-amount')}</h3> <span id="remnant-gain"></span> Remanescentes.`,
 
         'rocket-part-div': `Você criou o total de <h3 id="total-rocket-part">0</h3> Partes do Foguete.`,
         'observ-div': `Você tem <h3>${toTextStyle('0','observ','observ-amount')}</h3> <span id="observ-gain"></span> observatórios. (<h3>${toTextStyle('0','observ','observ-total')}</h3> total)`,
@@ -366,7 +366,7 @@ LANGUAGES.PT = {
         'research-f8-desc': `O primeiro efeito do tier de mineração é reduzido.`,
 
         'research-s1-name': "Peixe de Sobra",
-        'research-s1-desc': `${toTextStyle("Peixe",'fish')} impulsiona a geração de ${toTextStyle("Sobras",'black-hole')} de forma reduzida.`,
+        'research-s1-desc': `${toTextStyle("Peixe",'fish')} impulsiona a geração de ${toTextStyle("Remanescentes",'black-hole')} de forma reduzida.`,
 
         'research-s2-name': "Melhorado Impulso do Rank",
         'research-s2-desc': `Melhora o Impulso do Rank do ${toTextStyle("Tubarão",'shark')} para Fragmentos de ${toTextStyle('Prestígio','prestige')}.`,
@@ -375,22 +375,22 @@ LANGUAGES.PT = {
         'research-s3-desc': `Os oceanos <b>Pacifico e Ártico</b> providênciam um impulso exponencial, e melhora os <b>oceanos Atlântico e Antártico</b>.`,
 
         'all-research': {
-            's4': ["Pure Oceans II",`The <b>Indian Ocean</b> provides an exponential boost at a reduced rate.`],
-            's5': ["Pure Oceans III",`The first <b>N</b> Oceans' depth progress reductions are removed until the <b>Indian Ocean</b>. The 6th level improves the 10th radioactive bonus.`],
+            's4': ["Oceano Puro II",`O oceano <b>Indíco</b> providência um impulso exponencial de forma reduzida.`],
+            's5': ["Oceano Puro III",`As reduções do progresso de profundidade dos primeiros <b>N</b> oceanoss são removidos até o Oceano <b>Indíco</b>. O sexto nível melhorar o decímo bonûs radioativo.`],
 
             'dm1': ["Buraco Negro Inicial",`Começa com <b>+1</b> ${toTextStyle("Buraco Negro",'black-hole')} formado no sacrificio por nível. Cada inicial buraco negro atrasa a redução.`],
             'dm2': ["Sobra Melhorada I",`Melhora a melhoria de ${toTextStyle("Sobra",'black-hole')} "Bem-vindo denovo", ele afeta Fragmentos de ${toTextStyle("Prestígio",'prestige')}.`],
-            'dm3': ["Better Remnant II",`Improve the ${toTextStyle("Remnant",'black-hole')} upgrade "Shark Master".`],
-            'dm4': ["Better Remnant III",`Improve the ${toTextStyle("Shark",'shark')} level & rank boosts for ${toTextStyle("Remnant",'black-hole')} generation.`],
-            'dm5': ["Softcapless Core Temperature",`Remove the softcap of the ${toTextStyle('Core','core')}'s temperature.`],
-            'dm6': ["Better Radiation Generator",`${toTextStyle('Radiation '+icon('radioactive'),'core')} generator raises itself to the exponent at a reduced rate.`],
-            'dm7': ["Dark Remnants",`Total ${toTextStyle("Dark Matter",'black-hole')} boosts ${toTextStyle("Remnant",'black-hole')} generation.`],
+            'dm3': ["Sobra Melhorada II",`Melhora a melhoria de ${toTextStyle("Sobra",'black-hole')} "Mestre Tubarão".`],
+            'dm4': ["Sobra Melhorada III",`Melhora is impulsos do nível do ${toTextStyle("Tubarão",'shark')} e rank para a geração de ${toTextStyle("Sobra",'black-hole')}.`],
+            'dm5': ["Temperatura do núcleo sem softcap",`Remove o softcap da temperatura do ${toTextStyle('Núcleo','core')}.`],
+            'dm6': ["Melhorado Gerador de Radiação",`Gerador de ${toTextStyle('Radiação '+icon('radioactive'),'core')} eleva a si mesmo ao expoente de forma reduzida.`],
+            'dm7': ["Remanescentes Sombrios",`${toTextStyle("Matéria Negra",'black-hole')} no total impulsiona a geração de ${toTextStyle("Remanescentes",'black-hole')}.`],
 
             'e7': ["Sunda Trench MK2",`Improve the <b>Indian Ocean</b>’s depth progress significantly.`],
 
             'm5': ["Shark Rank 'onto' Super Mining",`${toTextStyle("Shark",'shark')} Rank boost to mining damage affects super mining damage at a reduced rate.`],
             'm6': ["The Uranium Shark",`'Shark Exponent' is overpowered.`],
-            'm7': ["Double Remnant Scaling",`The first scaling of ${toTextStyle("Remnant",'black-hole')} upgrades is delayed by <b>+100</b>.`],
+            'm7': ["Double Remnant Scaling",`The first scaling of ${toTextStyle("Remanescentes",'black-hole')} upgrades is delayed by <b>+100</b>.`],
             'm8': ["Ultimate Radiation",`The 14th radioactive boost’s effect is improved.`],
 
             'o1': [`Automação do Observatório`,`Automatiza todas as melhorias de ${toTextStyle('Observatório','observ')} sem gastar. <i>Essa pesquisa não é resetada.</i>`],
@@ -482,7 +482,7 @@ LANGUAGES.PT = {
             x=>`Providência um bonus de compra para melhorias de exploração em <h4>${formatMult(x,3)}</h4>.`,
             x=>`Providência <h4>+${format(x)}</h4> reatores do núcleo a primeira linha.`,
             x=>`Impulsiona o ganho de ${toTextStyle('Matéria Negra','black-hole')} em <h4>${formatMult(x)}</h4>.`,
-            x=>`Impulsiona a geração de ${toTextStyle('Sobras','black-hole')} em <h4>${formatMult(x)}</h4>.`,
+            x=>`Impulsiona a geração de ${toTextStyle('Remanescentes','black-hole')} em <h4>${formatMult(x)}</h4>.`,
             x=>`Os bonûs anteriores são <h4>${formatPercent(x.sub(1))}</h4> mais poderosos, exceto o sexto.`,
         ],
 
@@ -722,12 +722,12 @@ LANGUAGES.PT = {
         ],
         get 'singularity-milestones'() {
             return [
-                [`1 Buraco Negro`,`Desbloqueia ${toTextStyle("Sobras",'black-hole')}. Nível do ${toTextStyle("Tubarão",'shark')} impulsiona a geração de ${toTextStyle("Sobras",'black-hole')}.`],
-                [`2 Buracos Negros`,`Começa com automações desbloqueadas na redefinção, com o intervalo inicial. Rank do ${toTextStyle("Tubarão",'shark')} impulsiona a geração de ${toTextStyle("Sobras",'black-hole')}.`],
+                [`1 Buraco Negro`,`Desbloqueia ${toTextStyle("Remanescentes",'black-hole')}. Nível do ${toTextStyle("Tubarão",'shark')} impulsiona a geração de ${toTextStyle("Remanescentes",'black-hole')}.`],
+                [`2 Buracos Negros`,`Começa com automações desbloqueadas na redefinção, com o intervalo inicial. Rank do ${toTextStyle("Tubarão",'shark')} impulsiona a geração de ${toTextStyle("Remanescentes",'black-hole')}.`],
                 [`3 Buracos Negros`,`Mantenha automações na redefinição. Começa com o conteúdo da pre-cultivação desbloqueada e 10 ${toTextStyle("Homens",'humanoid')}-Tubarões. Desbloqueia mais pesquisas.`],
                 [`4 Buracos Negros`,`Mantenha os objetivos da ${toTextStyle("Evolução",'humanoid')} completos na redefinição. Aceleradores de Partículas são 10 vezes mais rápido.`],
                 [`5 Buracos Negros`,`Vida do minério escala mais fraco. Desbloqueia mais automação.`],
-                [`6 Buracos Negros`,`A cada buraco negro formado dobra a geração de ${toTextStyle("Sobras",'black-hole')}.`],
+                [`6 Buracos Negros`,`A cada buraco negro formado dobra a geração de ${toTextStyle("Remanescentes",'black-hole')}.`],
                 [`7 Buracos Negros`,`Começa com cultivação desbloqueada na redefinição.`],
                 [`8 Buracos Negros`,`Os nerfs do ${toTextStyle("Buraco Negro",'black-hole')} são agora removidos se você tem pelo menos 8 ${toTextStyle("Buracos Negros",'black-hole')}. Formar buraco negro não mas faz a animação. Desbloqueia o novo conteúdo.`],
             
@@ -755,7 +755,7 @@ LANGUAGES.PT = {
             [`Mega Nível`,x=>`A quarta escala do Nível do ${toTextStyle("Tubarão",'shark')} é atrasada em ${x}.`],
             [`Mineiro de Elite`,x=>`A terceira escala do tier de mineração é atrasada em ${x}.`],
 
-            [`Auto-Aceleração`,x=>`${toTextStyle("Sobras",'black-hole')} impulsiona a si mesmo em ${x}.`],
+            [`Auto-Aceleração`,x=>`${toTextStyle("Remanescentes",'black-hole')} impulsiona a si mesmo em ${x}.`],
             [`Poder Supremo`,x=>`As primeiras 12 melhorias de ${toTextStyle("Sobra",'black-hole')} são ${x} mais poderosas, exceto a quarta.`],
             [`Eficiência VI`,x=>`O super dano da mineração é impulsionado em ${x}.`],
             [`Tubarão Sobrenatural`,x=>`O expoente de ${toTextStyle("Homens",'humanoid')}-tubarões é aumentado em ${x}.`],
@@ -796,7 +796,7 @@ LANGUAGES.PT = {
         'auto-humanoid-name': `Auto-${toTextStyle("Homens","humanoid")}-Tubarões`,
         'auto-research-name': `Auto-Pre-Pesquisa da ${toTextStyle("Singularidade","black-hole")}`,
         'auto-mining_tier-name': `Auto-Tier da Mineração`,
-        'auto-remnant-name': `Auto-Melhorias de ${toTextStyle("Sobras","black-hole")}`,
+        'auto-remnant-name': `Auto-Melhorias de ${toTextStyle("Remanescentes","black-hole")}`,
         'auto-faith-name': `Auto-${toTextStyle("Fé Sharkoid","humanoid")}`,
 
         'auto-cost': (D,cost,name) => `Diminua o intervalo em ${formatReduction(D,0)}.<br>Custo: ${format(cost,0)} ${name}`,
@@ -908,7 +908,7 @@ LANGUAGES.PT = {
         },
         'scaling-info': `Escalas vão aparecer quando você chegar nelas. <b>N</b> - Quantidade, <b>S</b> - Começo`,
 
-        'shark-bonus-remnants': x => `+${x.format(0)} ${toTextStyle('Sobras','black-hole')}`,
+        'shark-bonus-remnants': x => `+${x.format(0)} ${toTextStyle('Remanescentes','black-hole')}`,
 
         'shark-overpopulation': (x,y) => `Por causa da superpopulação do ${toTextStyle('Tubarão','shark')} em <h4>${toTextStyle(format(y),'fish')}</h4>, ${toTextStyle('Peixe','fish')} comido, ganho de ${toTextStyle('Peixe','fish')} é reduzido por <h4>${format(x,3)}√</h4>.`,
 
@@ -918,7 +918,7 @@ LANGUAGES.PT = {
             mining_damage: x => `${formatMult(x)} Dano da Mineração`,
             so: x => `${formatPow(x)} Atraso da superpopulação do ${toTextStyle('Tubarão','shark')}`,
             vibranium: x => `${formatMult(x)} <b>Vibranium</b>`,
-            remnants: x => `${formatMult(x)} ${toTextStyle('Sobras','black-hole')}`,
+            remnants: x => `${formatMult(x)} ${toTextStyle('Remanescentes','black-hole')}`,
         },
 
         'reward': "Recompensa",
@@ -943,7 +943,6 @@ LANGUAGES.PT = {
         'require': "Requer",
         'next-at': "Próximo em",
         'depth': "Profundidade",
-        'you-have': "Você tem",
         
         'research-afford': bool => bool ? "Comprar" : "Não se pode comprarr",
         'research-bought': bool => bool ? `<b>Comprado</b>` : `<b>Não comprado</b>`,
