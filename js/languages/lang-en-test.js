@@ -6,12 +6,6 @@ LANGUAGES.EN = {
     icon: "lang-en",
 
     text: {
-        'all-research': {
-            'm9': [`No Radiation Overflow`,`The softcap of ${toTextStyle('Radiation '+icon('radioactive'),'core')} production is removed.`],
-            'm10': [`Auto-Core Reactor MK2`,`Auto-${toTextStyle('Core','core')} Reactor now applies to the third row of ${toTextStyle('Core','core')} reactors.`],
-            'm11': [`Auto-Mining Upgrade MK2`,`Auto-${toTextStyle('Shark','shark')} Mining Upgrade now applies to the rest of ${toTextStyle('Shark','shark')} mining upgrades.`],
-        },
-
         // Evolution Tree
 
         'evolution-tree-row': (r,a) => `<b>Row ${r}</b><br>${a} available`,
