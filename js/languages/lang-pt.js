@@ -858,6 +858,9 @@ LANGUAGES.PT = {
             [`Prestígio Estelar`, x=>`Impulsiona o ganho de Fragmentos de ${toTextStyle('Prestígio','prestige')} em ${x} para o expoente.`, x=>`Impulsiona o ganho de ${toTextStyle('Reservatórios','reserv')} em ${x}.`],
             [`Fragmentos Estelares`, x=>`Impulsiona o ganho de Fragmentos ${toTextStyle('Magmáticos','core')} em ${x}.`, x=>`Impulsiona o ganho de ${toTextStyle('Trajetórias','traject')} em ${x}.`],
             [`Tubarões Estelares`, x=>`Impulsiona o expoente de ${toTextStyle('Homens','humanoid')}-tubarões em ${x}.`, x=>`Reduz o requerimento do tier do ${toTextStyle('Experimento','experiment')} em ${x}`],
+            [`Radiação Estelar `+icon("radioactive"), x=>`Impulsiona a produção de ${toTextStyle('Radiação ' + icon("radioactive"),'core')} em ${x}.`, x=>`Sem efeito providenciado.`],
+            [`Radiação Hawking `+icon("radioactive"), x=>`Impulsiona ${toTextStyle('Particulas Fundamentais','hadron')} em ${x}.`, x=>`Sem efeito providenciado.`],
+            [`Nebulae`, x=>`Os primeiros 6 recursos da${toTextStyle("Constelação",'star')} são ${x} mais fortes.`, x=>`Sem efeito providenciado.`],
         ],
 
         // Automation
