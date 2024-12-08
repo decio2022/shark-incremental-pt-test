@@ -428,10 +428,10 @@ LANGUAGES.PT = {
             'h4': [`Melhor Limite de Peixe`, `Melhora o efeito do total de ${toTextStyle("Particulas Fundamentais",'hadron')}.`],
             'h5': [`Equivalente a Buraco Negro`, `Automaticamente aumenta o tier do ${toTextStyle("Buraco Negro",'black-hole')} sem fazer um reinicio.`],
             'h6': [`Qubit IQ`, `${toTextStyle("Peixe",'fish')} multiplica o ${toTextStyle("QI", 'hadron')} do ${toTextStyle("Tubarão",'shark')}. Melhore também a pesquisa <b>h1</b>.`],
-            'h7': [`First Scaling Sacrifice`, `Remove the scaling of ${toTextStyle("Remnant",'black-hole')} upgrades. Unlock more ${toTextStyle("Remnant",'black-hole')} upgrades.`],
-            'h8': [`Even Better Fish Cap`, `Improve the effect of total ${toTextStyle("Fundamental Particles",'hadron')} even more.`],
-            'h9': [`Hadronic Generation`, `Passively generates <b>100%</b> of your ${toTextStyle("Funadmental Particles",'hadron')} gained on reset.`],
-            'h10': [`Inflation is Nonsense`, `Remove all scalings of radioactive boosts.`],
+            'h7': [`Primeiro Sacrificio de Escala`, `Remova a escala das melhorias de ${toTextStyle("Remanescentes",'black-hole')}. Desbloqueia mais melhorias de ${toTextStyle("Remanescentes",'black-hole')}.`],
+            'h8': [`Limite de Peixe Mais Melhorado`, `Melhora o efeito do total de ${toTextStyle("Particulas Fundamentais",'hadron')} ainda mais.`],
+            'h9': [`Geração Hadrônica`, `Passivamente gera <b>100%</b> das suas ${toTextStyle("Particulas Fundamentais",'hadron')} ganhas no reinicio.`],
+            'h10': [`Inflação é um absurdo`, `Remova todas as escalas dos impulsos radioativos.`],
         },
 
         // Exploration
