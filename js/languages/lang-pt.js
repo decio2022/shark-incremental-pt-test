@@ -47,6 +47,9 @@ LANGUAGES.PT = {
         'reserv-name': "Reservatórios",
         'reserv-costName': toTextStyle('Reservatórios','reserv'),
 
+        'hadron-name': "Particulas Fundamentais",
+        'hadron-costName': toTextStyle('Particulas Fundamentais','hadron'),
+
         'full-shark-level': 'Nível do ' + toTextStyle('Tubarão', 'shark'),
         'full-shark-rank': 'Rank do ' + toTextStyle('Tubarão', 'shark'),
         
@@ -72,6 +75,9 @@ LANGUAGES.PT = {
 
         'curr-top-5-req': x => `Alcançe <b>${format(x)}</b> ${toTextStyle('Reservatórios','reserv')}`, 
         'curr-top-5-reset': x => `Viaje para <b>${format(x,0)}</b> ${toTextStyle('Trajetos','traject')}`,
+
+        'curr-top-6-req': x => `Alcançe <b>${format(x)}</b> ${toTextStyle('Peixes','fish')}`, 
+        'curr-top-6-reset': (x,next) => `Hadronize para <b>${format(x,0)}</b> ${toTextStyle('Particulas Fundamentais','hadron')} (Proximo em <b>${format(next)}</b> ${toTextStyle('Peixes','fish')})`,
         
         'radioactive-name': toTextStyle('Radiação '+icon("radioactive"),'core'),
 
@@ -103,6 +109,11 @@ LANGUAGES.PT = {
         'tab-singularity-milestones': "Marcos Importantes da "+toTextStyle(' Singularidade','black-hole'),
         'tab-solar-system': "Sistema Solar",
         'tab-constellation': toTextStyle('Constelação','star'),
+
+        'tab-hadron': toTextStyle('Hadronizar','hadron'),
+        'tab-hadron-su': "Melhorias Iniciais",
+        'tab-shark-tier': "Tier do "+ toTextStyle('Shark','shark'),
+        'tab-nucleobase': "Nucleobases",
 
 
         // Elements
@@ -167,6 +178,9 @@ LANGUAGES.PT = {
 
         'bh-tier-div': `Seu Tier do Buraco Negro é <h3>${toTextStyle('0','black-hole','bh-tier')}</h3>.`,
         'bh-tier-button': `Chega o requerimento para melhorar o Tier do ${toTextStyle('Buraco Negro','black-hole')} para uma recompensa poderosa.`,
+
+        'fundamental-amount-div': `Você tem um total de <h3>${toTextStyle('0','hadron','total-fundamental')}</h3> particulas fundamentais, que aumenta o limite de ${toTextStyle('Peixe','fish')} para <h3 id="fundamental-effect">???</h3>.`,
+        'starter-upg-note': `Nota: O preço é <b>dobrado</b> a cada melhoria comprada. A primeira melhoria é <b>RECOMENDADA</b> para comprar depois do primeiro reinicio.`,
         
         // Upgrades
 
@@ -407,6 +421,17 @@ LANGUAGES.PT = {
             't1': [`Automação da Trajetoria`,`Automatiza tudas as melhorias de ${toTextStyle('Trajetoria','traject')} sem gastar. <i>Essa pesquisa não é resetada.</i>`],
             't2': [`Melhoria da Trajetoria`,`Melhora ainda mais a formula de ganho do ${toTextStyle('Trajetoria','traject')}.`],
             't3': [`Geração de Trajetoria`,`Gera 100% das suas ${toTextStyle('Trajetorias','traject')} ganhas na redefinição. <i>Essa pesquisa não é resetada.</i>`],
+
+            'h1': [`Intensificador de QI`,`Nível do ${toTextStyle("Tubarão",'shark')} multiplica o ${toTextStyle("QI", 'hadron')} do ${toTextStyle("Tubarão",'shark')} super-logaritmicamente.`],
+            'h2': [`Mantedor de Forja no Hadron`, `Sempre tenha as forjas na ${toTextStyle("Hadronização",'hadron')}.`],
+            'h3': [`Buraco Negro Escalonado`, `O total de ${toTextStyle("Particulas Fundamentais",'hadron')} atrasa a escala do Tier do ${toTextStyle("Buraco Negro",'black-hole')} logaritimicamente.`],
+            'h4': [`Better Fish Cap`, `Improve the effect of total ${toTextStyle("Fundamental Particles",'hadron')}.`],
+            'h5': [`Black Hole Equivalent`, `Automatically tier ${toTextStyle("Black Hole",'black-hole')} up without triggering a reset.`],
+            'h6': [`Qubit IQ`, `${toTextStyle("Fish",'fish')} multiplies Shark ${toTextStyle("Shark",'shark')} ${toTextStyle("IQ",'hadron')}. Improve the research <b>h1</b>.`],
+            'h7': [`First Scaling Sacrifice`, `Remove the scaling of ${toTextStyle("Remnant",'black-hole')} upgrades. Unlock more ${toTextStyle("Remnant",'black-hole')} upgrades.`],
+            'h8': [`Even Better Fish Cap`, `Improve the effect of total ${toTextStyle("Fundamental Particles",'hadron')} even more.`],
+            'h9': [`Hadronic Generation`, `Passively generates <b>100%</b> of your ${toTextStyle("Funadmental Particles",'hadron')} gained on reset.`],
+            'h10': [`Inflation is Nonsense`, `Remove all scalings of radioactive boosts.`],
         },
 
         // Exploration
