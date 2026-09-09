@@ -112,7 +112,7 @@ LANGUAGES.PT = {
 
         'tab-hadron': toTextStyle('Hadronizar','hadron'),
         'tab-hadron-su': "Melhorias Iniciais",
-        'tab-shark-tier': "Tier do "+ toTextStyle('Shark','shark'),
+        'tab-shark-tier': "Tier do "+ toTextStyle('Tubarão','shark'),
         'tab-nucleobase': "Nucleobases",
 
 
@@ -140,7 +140,7 @@ LANGUAGES.PT = {
             return `
             <summary>O ${c} experimento da radiação</summary>
             Experimentar uma radiação do núcleo força o reset do ${toTextStyle('Núcleo','core')}.
-            Enquanto esta no experimento, os reatores do núcleo core não funcionam. ${toTextStyle('Peixe','fish')}, Fragmentos de ${toTextStyle('Prestígio','prestige')} , e os recursos dos primeiros 4 oceanos sofrem uma raiz cúbica.
+            Enquanto esta no experimento, os reatores do núcleo não funcionam. ${toTextStyle('Peixe','fish')}, Fragmentos de ${toTextStyle('Prestígio','prestige')} , e os recursos dos primeiros 4 oceanos sofrem uma raiz cúbica.
             O experimento força seu ${toTextStyle('Tubarão','shark')} a comer ${rf}.<br>
             Melhore com radioativo${rf} para gerar mais ${toTextStyle('Radiação '+icon("radioactive"),'core')}, que dá a voce impulsos adicionais.
             `
@@ -305,7 +305,7 @@ LANGUAGES.PT = {
         'research-c2-desc': `Mantenha os primeiros <b>X</b> oceanos desbloqueados e a profundidade deles ao entrar no  ${toTextStyle('Núcleo','core')}.`,
 
         'research-c3-name': "Afeição do neon I",
-        'research-c3-desc': `<b>Neon</b> agora afeta 'Dente de tubarão', 'Expoente de tubarão', and 'Tubarão escalonado'.`,
+        'research-c3-desc': `<b>Neon</b> agora afeta 'Dente de tubarão', 'Expoente de tubarão', e 'Tubarão escalonado'.`,
 
         'research-c4-name': "Nickel Aprimorado",
         'research-c4-desc': `O poder do efeito do <b>Níquel</b> é <b>dobrado</b> `,
@@ -374,7 +374,7 @@ LANGUAGES.PT = {
         'research-f6-desc': `Os primeiros 9 minérios são impulsionados pelo tier da mineração.`,
 
         'research-f7-name': "Melhor ELO do Tubarão",
-        'research-f7-desc': `A base de homens-tubarões na formula do ELO do ${toTextStyle("Tubarão",'shark')} é melhorado para <b>x</b> to <b>2<sup>x</sup>-1</b>.`,
+        'research-f7-desc': `A base de homens-tubarões na formula do ELO do ${toTextStyle("Tubarão",'shark')} é melhorado de <b>x</b> para <b>2<sup>x</sup>-1</b>.`,
 
         'research-f8-name': "Vida do Minério mais Fraco",
         'research-f8-desc': `O primeiro efeito do tier de mineração é reduzido.`,
@@ -395,16 +395,16 @@ LANGUAGES.PT = {
             'dm1': ["Buraco Negro Inicial",`Começa com <b>+1</b> ${toTextStyle("Buraco Negro",'black-hole')} formado no sacrificio por nível. Cada inicial buraco negro atrasa a redução.`],
             'dm2': ["Sobra Melhorada I",`Melhora a melhoria de ${toTextStyle("Sobra",'black-hole')} "Bem-vindo denovo", ele afeta Fragmentos de ${toTextStyle("Prestígio",'prestige')}.`],
             'dm3': ["Sobra Melhorada II",`Melhora a melhoria de ${toTextStyle("Sobra",'black-hole')} "Mestre Tubarão".`],
-            'dm4': ["Sobra Melhorada III",`Melhora is impulsos do nível do ${toTextStyle("Tubarão",'shark')} e rank para a geração de ${toTextStyle("Sobra",'black-hole')}.`],
+            'dm4': ["Sobra Melhorada III",`Melhora os impulsos do nível do ${toTextStyle("Tubarão",'shark')} e rank para a geração de ${toTextStyle("Sobra",'black-hole')}.`],
             'dm5': ["Temperatura do núcleo sem softcap",`Remove o softcap da temperatura do ${toTextStyle('Núcleo','core')}.`],
             'dm6': ["Melhorado Gerador de Radiação",`Gerador de ${toTextStyle('Radiação '+icon('radioactive'),'core')} eleva a si mesmo ao expoente de forma reduzida.`],
             'dm7': ["Remanescentes Sombrios",`${toTextStyle("Matéria Negra",'black-hole')} no total impulsiona a geração de ${toTextStyle("Remanescentes",'black-hole')}.`],
 
-            'e7': ["Fossa de Sunda MK2",`Melhora o progresso da profundidade do Oceano <b>Indíco Ocean</b> significativamente.`],
+            'e7': ["Fossa de Sunda MK2",`Melhora o progresso da profundidade do <b>Oceano Índico</b> significativamente.`],
 
             'm5': ["Rank do Tubarão 'para' Super Mineração",`O impulso ao dano da mineração do rank do ${toTextStyle("Tubarão",'shark')} afeta super dano da mineração de forma reduzida.`],
             'm6': ["O Tubarão de Urânio",`'Expoente do Tubarão' é poderoso.`],
-            'm7': ["Dobro da Escara de Remanescentes",`A primeira escala das melhorias de ${toTextStyle("Remanescentes",'black-hole')} upgrades is delayed by <b>+100</b>.`],
+            'm7': ["Dobro da Escara de Remanescentes",`A primeira escala das melhorias de ${toTextStyle("Remanescentes",'black-hole')} é atrasada por <b>+100</b>.`],
             'm8': ["Ultimato da Radiação",`O décimo quarto efeito do impulsulsionador radioativo é melhorado.`],
             'm9': [`Sem Overflow da Radiação`,`O softcap da produção da ${toTextStyle('Radiação '+icon('radioactive'),'core')} é removido.`],
             'm10': [`Auto-Reator do Núcleo MK2`,`Auto-Reator do ${toTextStyle('Núcleo','core')} agora aplica a terceira linha dos reatores do ${toTextStyle('Núcleo','core')}.`],
@@ -467,7 +467,7 @@ LANGUAGES.PT = {
         'explore-2-name': `Oceano Atlântico`,
         'explore-2-desc': `Redefine seus Fragmentos de ${toTextStyle('Prestígio','prestige')} e Melhorias de ${toTextStyle('Prestígio','prestige')}. O escalonamento do nível do ${toTextStyle('Tubarão','shark')} tem 10x sua força normal.` ,
         'explore-2-milestone': [
-            `Os escalonamentos de 'Dentes de Tubarão' and 'Expoente de Tubarão' são levemente mais fracos.`,
+            `Os escalonamentos de 'Dentes de Tubarão' e 'Expoente de Tubarão' são levemente mais fracos.`,
             `Aumenta o recurso e a profundidade de progresso em 1.25 elevado à raiz quadrada do nível de ${toTextStyle('Tubarão','shark')} .`,
             `O primeiro escalonamento do nível de ${toTextStyle('Tubarão','shark')} começa +1 mais tarde por 500m de profundidade.`,
             `O poder do efeito do oceano é reduzido à metade.`,
@@ -716,7 +716,7 @@ LANGUAGES.PT = {
             'anvil': ['Tier da Bigorna','Desbloqueia novas melhorias de forja.'],
             'drill': ['Tier da Broca','Aumenta o multiplicador da <b>Pedra</b> minerados.'],
             'shard': ['Fragmento Refinado',`Aumenta o multiplicador de Fragmentos de ${toTextStyle('Prestígios','prestige')}.`],
-            'tree': ['Árvore Extraordinária Tree',`Desbloqueia uma nova linha de árvore da ${toTextStyle('Evolução','humanoid')}.`],
+            'tree': ['Árvore Extraordinária',`Desbloqueia uma nova linha de árvore da ${toTextStyle('Evolução','humanoid')}.`],
             'adv_research': ['Pesquisa Avançada',`Desbloqueia uma nova pesquisa.`],
             'auto': ['Automação Avançada',`Desbloqueia uma nova automação.`],
             'shark': ['Nível do Tubarão mais Distante',`Atrasa a terceira escala do Nível do ${toTextStyle('Tubarão','shark')}.`],
@@ -797,8 +797,8 @@ LANGUAGES.PT = {
         ],
 
         'solar-system-list': {
-            'sun':     ["Sun",`O Sol é uma estrela que está no centro do nosso sistema solar. É composto principalmente de hidrogênio e hélio e é a principal fonte de luz e calor para a Terra e os outros planetas do sistema. O Sol também cria as condições para a vida na Terra, fornecendo fotossíntese e condições climáticas. O Sol é enorme. Seu diâmetro é 109 vezes o diâmetro da Terra, e sua massa é 330.000 vezes a massa da Terra. A distância entre a Terra e o Sol é de 150 milhões de quilômetros, então o Sol parece tão pequeno para nós.`,`Desbloqueia a próxima camada de reinício (NYI). O multiplicador de ${toTextStyle('Fé Sharkoid','humanoid')} é dobrado denovo.`],
-            'mercury': ["Mercúrio",`Mercúrio é o menor planeta do sistema solar e o mais próximo do Sol. Ele é nomeado em homenagem ao deus romano antigo do comércio, porque se move pelo céu mais rapidamente do que os outros planetas. Mercúrio é coberto por crateras de impacto e é semelhante à Lua em aparência, indicando uma falta de atividade geológica interna ao longo do último bilhão de anos. O planeta tem quase nenhuma atmosfera, então sua temperatura de superfície varia mais do que a de qualquer outro planeta no sistema solar.`,`As 3 primeiras escalas dos impulsos radioativos são atrasado em ×10. Multiply ${toTextStyle('Observatories','observ')} generation by 10 again.`],
+            'sun':     ["Sol",`O Sol é uma estrela que está no centro do nosso sistema solar. É composto principalmente de hidrogênio e hélio e é a principal fonte de luz e calor para a Terra e os outros planetas do sistema. O Sol também cria as condições para a vida na Terra, fornecendo fotossíntese e condições climáticas. O Sol é enorme. Seu diâmetro é 109 vezes o diâmetro da Terra, e sua massa é 330.000 vezes a massa da Terra. A distância entre a Terra e o Sol é de 150 milhões de quilômetros, então o Sol parece tão pequeno para nós.`,`Desbloqueia a próxima camada de reinício (Ainda não implementado). O multiplicador de ${toTextStyle('Fé Sharkoid','humanoid')} é dobrado denovo.`],
+            'mercury': ["Mercúrio",`Mercúrio é o menor planeta do sistema solar e o mais próximo do Sol. Ele é nomeado em homenagem ao deus romano antigo do comércio, porque se move pelo céu mais rapidamente do que os outros planetas. Mercúrio é coberto por crateras de impacto e é semelhante à Lua em aparência, indicando uma falta de atividade geológica interna ao longo do último bilhão de anos. O planeta tem quase nenhuma atmosfera, então sua temperatura de superfície varia mais do que a de qualquer outro planeta no sistema solar.`,`As 3 primeiras escalas dos impulsos radioativos são atrasado em ×10. Multiplique novamente a geração de ${toTextStyle('Observatórios','observ')} por 10.`],
             'venus':   ["Vênus",`Vênus é o segundo planeta mais próximo do Sol e o sexto maior do Sistema Solar. É nomeado em homenagem à antiga deusa romana do amor. Vênus possui uma atmosfera densa composta por mais de 96% de dióxido de carbono. A temperatura média da superfície de Vênus é de 735 K (462 °C), tornando-o o planeta mais quente do sistema solar. Vênus não possui satélites naturais. No céu da Terra, é o terceiro corpo celeste mais brilhante, depois do Sol e da Lua.`,`Passivamente gera 100% do atual ${toTextStyle('Homens','humanoid')}-tubarões como ${toTextStyle('Homens','humanoid')}-tubarões, mas auto-${toTextStyle('Homem','humanoid')}-tubarão não mais funciona. Melhora ${toTextStyle('Homem','humanoid')}-tubarão drasticamente, e a terceira escala do rank do ${toTextStyle('Tubarão','shark')} é atrasada em ×2. Multiplica a geração de ${toTextStyle('Observatórios','observ')} em 10.`],
             'earth':   ["Terra",`???`,`???`],
             'mars':    ["Marte" ,`Marte é o quarto planeta mais distante do Sol no Sistema Solar. Ele pertence ao grupo dos planetas terrestres, pois possui uma superfície sólida e um tamanho comparável ao da Terra. O terreno de Marte apresenta características únicas, incluindo crateras de impacto, vulcões, vales, desertos e calotas polares de gelo. Marte possui formações geológicas que se assemelham à erosão causada pela água e minerais que só poderiam ter se formado por exposição prolongada à água. A questão da existência de vida em Marte tem interessado cientistas por séculos.`,`Ganha a habilidade de terraformar qualquer melhoria da árvore da ${toTextStyle('Evolução','humanoid')} para bônus poderosos, mas o custo cresce rápido. Desbloqueia nova automação. Multiplica a geração de ${toTextStyle('Observatórios','observ')} em 10.`],
@@ -829,7 +829,7 @@ LANGUAGES.PT = {
             'e2': [`Trocador de Prestígio`,x=>`${toTextStyle('Observatórios','observ')} é impulsionado em ${x}.`],
             'e3': [`Trocador do Núcleo`,x=>`${toTextStyle('Observatórios','observ')} é impulsionado em ${x}.`],
             'e4': [`Observa o Reservatório`,x=>`${toTextStyle('Reservatórios','reserv')} é impulsionado em ${x}.`],
-            'e5': [`Trocador Universal`,x=>`A base das melhorias “Exchanger”, de ${toTextStyle('Observatórios','observ')} é aumentado em ${x}.`],
+            'e5': [`Trocador Universal`,x=>`A base das melhorias “Trocador”, de ${toTextStyle('Observatórios','observ')} é aumentado em ${x}.`],
             'e6': [`Trajetória Reversa`,x=>`${toTextStyle('Trajetórias','traject')} é impulsionado em ${x}.`],
 
             'r1': [`O Relativo`,x=>`${toTextStyle('Observatórios','observ')} é impulsionado em ${x}.`],
@@ -860,7 +860,7 @@ LANGUAGES.PT = {
             [`Tubarões Estelares`, x=>`Impulsiona o expoente de ${toTextStyle('Homens','humanoid')}-tubarões em ${x}.`, x=>`Reduz o requerimento do tier do ${toTextStyle('Experimento','experiment')} em ${x}`],
             [`Radiação Estelar `+icon("radioactive"), x=>`Impulsiona a produção de ${toTextStyle('Radiação ' + icon("radioactive"),'core')} em ${x}.`, x=>`Sem efeito providenciado.`],
             [`Radiação Hawking `+icon("radioactive"), x=>`Impulsiona ${toTextStyle('Particulas Fundamentais','hadron')} em ${x}.`, x=>`Sem efeito providenciado.`],
-            [`Nebulae`, x=>`Os primeiros 6 recursos da${toTextStyle("Constelação",'star')} são ${x} mais fortes.`, x=>`Sem efeito providenciado.`],
+            [`Nebulosas`, x=>`Os primeiros 6 recursos da${toTextStyle("Constelação",'star')} são ${x} mais fortes.`, x=>`Sem efeito providenciado.`],
         ],
 
         // Automation
@@ -890,7 +890,7 @@ LANGUAGES.PT = {
         'progress-1-text': r => `Alcançe ${format(r)} Fragmentos de ${toTextStyle('prestígio','prestige')} para desbloquear Automação`,
         'progress-2-text': r => `Alcançe ${format(r)} Fragmentos de ${toTextStyle('prestígio','prestige')} para desbloquear Research`,
         'progress-3-text': r => `Alcançe nível de ${toTextStyle('Tubarão','shark')} ${format(r,0)} para desbloquear Exploração`,
-        'progress-4-text': r => `Alcançe ${format(r)}m of Pacific ocean's depth para desbloquear the ${toTextStyle('Núcleo','core')}`,
+        'progress-4-text': r => `Alcançe ${format(r)}m de profundidade do Oceano Pacífico para desbloquear o ${toTextStyle('Núcleo','core')}`,
 
         'progress-5-text': r => `Alcançe ${format(r)} Fragmentos de ${toTextStyle('prestígio','prestige')} totais`, 
         get 'progress-5-cond-text'() { return `Entre o ${toTextStyle('Núcleo','core')}` },
@@ -940,7 +940,7 @@ LANGUAGES.PT = {
             let c = toTextStyle('Núcleo','core'), m = toTextStyle('Magmáticos','core'), p = toTextStyle('Prestígio','prestige')
             return `
             <h3>O ${c}</h3><br>
-            O ${c} é a segunda camada de reinício. Entrar no núcleo redefine tudo que ${p} redefine, quanto Fragmentos de ${p}, melhorias de ${p}, ${toTextStyle('Pesquísa','prestige')} (quase), and Exploração por Fragments ${m} ,
+            O ${c} é a segunda camada de reinício. Entrar no núcleo redefine tudo que ${p} redefine, quanto Fragmentos de ${p}, melhorias de ${p}, ${toTextStyle('Pesquísa','prestige')} (quase), e Exploração por Fragmentos ${m} ,
             desbloqueando o reator do ${c} pela primeira vez.<br>
             <img src="textures/Magmatic.png"><br>
             Você tem certeza que gostaria de entrar no núcleo?
@@ -960,7 +960,7 @@ LANGUAGES.PT = {
         get 'reset-black-hole-message'() {
             let e = toTextStyle('Buraco Negro','black-hole'), c = toTextStyle('Evolução','humanoid')
             return `
-            <h3>The ${e}</h3><br>
+            <h3>O ${e}</h3><br>
             O ${e} é o quarto e a maior camada de reinício.
             Formar o ${e} redefine tudo que ${c} redefine, também o rank do tubarão, homens-tubarões, árvore da evolução, fé sharkoid, objetivos da evolução, cultivação, forja, aceleradores de partícula, algumas pesquisas, algumas automações, e alguns progressos de conteúdos para um novo ${e}.
             Porémr, cada ${e} reduz os recursos um pouco, mas desbloqueia benefícios como marcos importantes.<br>
@@ -1037,7 +1037,7 @@ LANGUAGES.PT = {
         'require': "Requer",
         'next-at': "Próximo em",
         'depth': "Profundidade",
-        'you-have': "You have",
+        'you-have': "Você tem",
 
         
         'research-afford': bool => bool ? "Comprar" : "Não se pode comprarr",
