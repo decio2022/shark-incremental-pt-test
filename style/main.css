@@ -1215,3 +1215,8 @@ subtitle {
 .sandbox-orig { margin: 4px 0; font-size: 12px; }
 .sandbox-orig > summary { cursor: pointer; opacity: 0.85; }
 .sandbox-orig pre { white-space: pre-wrap; word-break: break-word; text-align: left; background: #0002; border-radius: 5px; padding: 6px; max-height: 160px; overflow: auto; user-select: text; }
+.sandbox-toolbar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; justify-content: center; background: #20b2aaee; border: solid 2px #075551; border-radius: 8px; padding: 6px; margin: 8px auto; max-width: 1100px; }
+.sandbox-nav { position: sticky; top: 52px; z-index: 5; background: #20b2aadd; padding: 4px; border-radius: 8px; }
+.sb-nav-btn.selected { outline: solid 3px gold; }
+.sandbox-invalid { border-color: #c00 !important; background: #fdd !important; }
+.sandbox-file-btn { cursor: pointer; display: inline-block; }

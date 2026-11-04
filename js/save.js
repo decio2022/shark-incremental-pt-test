@@ -125,6 +125,7 @@ function getPlayerData() {
             research: {},
             explore: {},
         },
+        sandboxProfiles: {},
 
         auto: {},
         feature: 0,
