@@ -44,7 +44,7 @@ const CURRENCIES = {
 
             x = x.min(tmp.fish_cap)
 
-            return x
+            return sbGainFormula('fishGain', x)
         },
     },
     prestige: {
@@ -82,8 +82,8 @@ const CURRENCIES = {
             x = expPow(x,coreReactorEffect(9))
             x = expPow(x,constellationBoostEffect(1,false))
             x = expPow(x,getSharkTierBonus('prestige'))
-    
-            return x.floor()
+
+            return sbGainFormula('prestigeGain', x).floor()
         },
 
         get passive() { return hasDepthMilestone(1,3) ? 1 : 0 },
@@ -115,8 +115,8 @@ const CURRENCIES = {
             x = x.pow(constellationBoostEffect(2,false))
 
             x = expPow(x,getNucleobaseEffect('guanine',2))
-    
-            return x.floor()
+
+            return sbGainFormula('coreGain', x).floor()
         },
 
         get passive() { return hasEvolutionGoal(0) ? 1 : 0 },
@@ -176,7 +176,7 @@ const CURRENCIES = {
 
             x = x.pow(forgeUpgradeEffect('matter')).pow(getNucleobaseEffect('cytosine',2))
 
-            return x
+            return sbGainFormula('remnantsGain', x)
         },
     },
     'dark-matter': {
@@ -198,8 +198,8 @@ const CURRENCIES = {
             x = x.mul(getCRBoost(11))
 
             x = x.pow(getNucleobaseEffect('cytosine',2))
-    
-            return x.floor()
+
+            return sbGainFormula('darkMatterGain', x).floor()
         },
 
         get passive() { return +hasSMilestone(12) },
@@ -306,7 +306,7 @@ const CURRENCIES = {
 
             x = x.add(1).pow(.75).sub(1).mul(10).pow10().sub(1).pow10().sub(1).mul(this.mult).pow(this.exp).add(1)
 
-            return x.floor()
+            return sbGainFormula('hadronGain', x).floor()
         },
 
         get passive() { return +hasResearch('h9') },

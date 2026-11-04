@@ -8,6 +8,9 @@ const TAB_IDS = {
             return !isAutoEnabled('shark') && CURRENCIES.fish.amount.gte(SHARK.cost())
         },
     },
+    'sandbox': {
+        html: updateSandboxHTML,
+    },
     'options': {
         html() {
             for (let [i,x] of Object.entries(CONFIRMATIONS)) {
@@ -46,8 +49,9 @@ const TAB_IDS = {
 
                 var afford = true
 
-                for (let r of x.require) {
-                    let curr = CURRENCIES[r[0]], c = max>1?r[2](amt):r[2], s = (r[1]?curr.total:curr.amount)
+                for (let j = 0; j < x.require.length; j++) {
+                    let r = x.require[j]
+                    let curr = CURRENCIES[r[0]], c = getResearchCost(i,j,amt), s = (r[1]?curr.total:curr.amount)
                     if (s.sub(c).lt(0)) {
                         afford = false
                         break
@@ -69,7 +73,7 @@ const TAB_IDS = {
 
                 var amt = [CURRENCIES[e.cost[0][2]].amount, player.explore.res[i]]
 
-                for (let j = 0; j < 2; j++) if (amt[j].gte(e.cost[j][0](player.explore.upg[i][j]))) return true
+                for (let j = 0; j < 2; j++) if (amt[j].gte(getExploreUpgradeCost(i,j))) return true
             }
             return false
         },
@@ -233,6 +237,8 @@ const TAB_IDS = {
 const TABS = [
     { // 0
         stab: "shark",
+    },{
+        stab: "sandbox",
     },{
         stab: "options",
     },{

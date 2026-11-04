@@ -84,6 +84,7 @@ LANGUAGES.EN = {
         // Tabs
 
         'tab-shark': toTextStyle('Shark','shark'),
+        'tab-sandbox': "🧪 Sandbox",
         'tab-options': "Options",
         'tab-scalings': "Scalings",
         'tab-auto': "Automation",

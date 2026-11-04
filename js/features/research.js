@@ -713,9 +713,19 @@ function purchaseResearch(id,bulking=false) {
     const R = RESEARCH[id]
     let max = R.max??1
     if (player.research[id].gte(max) || bulking && max == 1) return
-    let amt = player.research[id], afford = true, after = R.require.map(r => {
+    // Sandbox-overridden costs have no analytic inverse: buy one level at a time.
+    if (bulking && sbResearchHasOverride(id)) {
+        let guard = 0
+        while (player.research[id].lt(max) && guard++ < 100) {
+            let before = player.research[id]
+            purchaseResearch(id, false)
+            if (player.research[id].lte(before)) break
+        }
+        return
+    }
+    let amt = player.research[id], afford = true, after = R.require.map((r,j) => {
         if (afford) {
-            let curr = CURRENCIES[r[0]], c = max>1?r[2](amt):r[2], s = (r[1]?curr.total:curr.amount)
+            let curr = CURRENCIES[r[0]], c = getResearchCost(id,j,amt), s = (r[1]?curr.total:curr.amount)
             if (s.sub(c).lt(0)) {
                 afford = false
                 return
@@ -728,10 +738,10 @@ function purchaseResearch(id,bulking=false) {
             let min_bulk = amt.add(1)
             after.forEach(x => {min_bulk = min_bulk.max(x)})
             player.research[id] = min_bulk
-            R.require.forEach(r => {
+            R.require.forEach((r,j) => {
                 if (r[1]) return
                 let curr = CURRENCIES[r[0]]
-                curr.amount = curr.amount.sub(r[2](min_bulk.sub(1))).max(0)
+                curr.amount = curr.amount.sub(getResearchCost(id,j,min_bulk.sub(1))).max(0)
             })
         } else {
             player.research[id] = player.research[id].add(1)
@@ -779,8 +789,8 @@ function updateResearchHTML() {
             el(el_id+"-button").style.display = el_display(!bought)
             if ((x.max??1)>1&&!x.noBuyMax) el(el_id+"-max-button").style.display = el_display(!bought)
             if (!bought) {
-                el(el_id+"-require").innerHTML = `<b>${text[2]}:</b> ` + x.require.map(r => {
-                    let curr = CURRENCIES[r[0]], cost = max>1?r[2](amt):r[2], a = (r[1]?curr.total:curr.amount).gte(cost)
+                el(el_id+"-require").innerHTML = `<b>${text[2]}:</b> ` + x.require.map((r,j) => {
+                    let curr = CURRENCIES[r[0]], cost = getResearchCost(i,j,amt), a = (r[1]?curr.total:curr.amount).gte(cost)
                     if (afford) afford &&= a
                     return `<span ${a ? "" : `style="color: #800"`}>${format(cost,0)}</span>`+" "+(r[1]?lang_text("total")+" ":"")+curr.costName
                 }).join(", ")
@@ -794,7 +804,7 @@ function updateResearchHTML() {
 }
 
 function updateResearchTemp() {
-    for (let [i,x] of Object.entries(RESEARCH)) if (x.effect) tmp.research_eff[i] = x.effect(player.research[i])
+    for (let [i,x] of Object.entries(RESEARCH)) if (x.effect || sbHasFormula(sbResearch(i).effect)) tmp.research_eff[i] = getResearchEffect(i)
 }
 
 function resetResearch(...x) {

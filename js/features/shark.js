@@ -1,6 +1,12 @@
 const SHARK = {
-    cost(l=player.shark_level) { return Decimal.pow(tmp.shark_req_base,l.mul(tmp.shark_scale_str).scaleAll("shark_level")).root(coreReactorEffect(3)) },
-    bulk(x=player.fish) { return x.pow(coreReactorEffect(3)).log(tmp.shark_req_base).scaleAll("shark_level",true).div(tmp.shark_scale_str).floor().add(1) },
+    cost(l=player.shark_level) {
+        const original = Decimal.pow(tmp.shark_req_base,l.mul(tmp.shark_scale_str).scaleAll("shark_level")).root(coreReactorEffect(3))
+        return sbHasFormula(sbFormula('sharkCost')) ? sbEval(sbFormula('sharkCost'), {level: E(l), reqBase: E(tmp.shark_req_base ?? 10), scale: E(tmp.shark_scale_str ?? 1), ...sbGlobalVars({level: E(l)})}, original) : original
+    },
+    bulk(x=player.fish) {
+        if (sbHasFormula(sbFormula('sharkCost'))) return sbBulk(l => SHARK.cost(l), x, player.shark_level)
+        return x.pow(coreReactorEffect(3)).log(tmp.shark_req_base).scaleAll("shark_level",true).div(tmp.shark_scale_str).floor().add(1)
+    },
 
     bonuses: {
         fish: [()=>player.shark_level.gte(1),l=>expPow(Decimal.pow(tmp.shark_base,l).mul(l),getCRBoost(5)),E(0)],
@@ -42,8 +48,24 @@ const SHARK = {
     },
 
     rank: {
-        get require() { return Decimal.pow(1.2,player.shark_rank.add(1).scaleAll("shark_rank")).sub(1).mul(500).ceil() },
-        get bulk() { return tmp.shark_elo.div(500).add(1).log(1.2).scaleAll("shark_rank",true).floor() },
+        get require() {
+            const original = Decimal.pow(1.2,player.shark_rank.add(1).scaleAll("shark_rank")).sub(1).mul(500).ceil()
+            return sbHasFormula(sbFormula('rankRequire')) ? sbEval(sbFormula('rankRequire'), sbGlobalVars({require: original}), original) : original
+        },
+        get bulk() {
+            if (sbHasFormula(sbFormula('rankRequire'))) {
+                // Invert the custom requirement: largest rank whose next-rank requirement <= ELO.
+                let r = player.shark_rank.floor(), guard = 0
+                const reqAt = rank => sbEval(sbFormula('rankRequire'), sbGlobalVars({rank}), EINF)
+                if (reqAt(r).gt(tmp.shark_elo)) return r
+                let lo = r, hi = r.add(1)
+                while (reqAt(hi).lte(tmp.shark_elo) && guard++ < 200) { lo = hi; hi = hi.mul(2).add(1) }
+                guard = 0
+                while (hi.sub(lo).gt(1) && guard++ < 200) { const mid = lo.add(hi).div(2).floor(); if (reqAt(mid).lte(tmp.shark_elo)) lo = mid; else hi = mid }
+                return lo
+            }
+            return tmp.shark_elo.div(500).add(1).log(1.2).scaleAll("shark_rank",true).floor()
+        },
 
         bonuses: {
             fish: [()=>player.shark_rank.gte(1),l=>Decimal.pow(1.1,l),E(1)],
@@ -82,8 +104,22 @@ const SHARK = {
             return `[${h}]`
         },
 
-        get require() { return player.shark_tier.add(1).scaleAll("shark_tier").sumBase(1.1).mul(10).add(50).ceil() },
-        get bulk() { return tmp.shark_iq.sub(50).div(10).max(0).sumBase(1.1,true).scaleAll("shark_tier",true).floor() },
+        get require() {
+            const original = player.shark_tier.add(1).scaleAll("shark_tier").sumBase(1.1).mul(10).add(50).ceil()
+            return sbHasFormula(sbFormula('tierRequire')) ? sbEval(sbFormula('tierRequire'), sbGlobalVars({require: original}), original) : original
+        },
+        get bulk() {
+            if (sbHasFormula(sbFormula('tierRequire'))) {
+                const reqAt = t => sbEval(sbFormula('tierRequire'), sbGlobalVars({tier: E(t), rank: E(t)}), EINF)
+                let lo = player.shark_tier.floor(), hi = lo.add(1), guard = 0
+                if (reqAt(lo).gt(tmp.shark_iq)) return lo
+                while (reqAt(hi).lte(tmp.shark_iq) && guard++ < 200) { lo = hi; hi = hi.mul(2).add(1) }
+                guard = 0
+                while (hi.sub(lo).gt(1) && guard++ < 200) { const mid = lo.add(hi).div(2).floor(); if (reqAt(mid).lte(tmp.shark_iq)) lo = mid; else hi = mid }
+                return lo
+            }
+            return tmp.shark_iq.sub(50).div(10).max(0).sumBase(1.1,true).scaleAll("shark_tier",true).floor()
+        },
 
         bonuses: {
             fish: [()=>player.shark_tier.gte(1),l=>Decimal.pow(1.1,l),E(1),x=>formatPow(x)],
@@ -392,44 +428,34 @@ const SU_TABS = {
 }
 
 function canAffordSharkUpgrade(i) {
-    const u = SHARK_UPGRADES[i]
-
-    if (tmp.su_locked[u.curr] || u.unl && !u.unl() || u.req && !u.req()) return false;
-
-    return CURRENCIES[u.curr].amount.gte(u.cost(player.shark_upg[i]))
+    const u = SHARK_UPGRADES[i], curr_id = sbSharkUpgCurr(i)
+    if (tmp.su_locked[curr_id] || u.unl && !u.unl() || u.req && !u.req()) return false;
+    return CURRENCIES[curr_id].amount.gte(getSharkUpgradeCost(i))
 }
-
 function buySharkUpgrade(i) {
-    const u = SHARK_UPGRADES[i]
-
-    if (tmp.su_locked[u.curr] || u.unl && !u.unl() || u.req && !u.req()) return;
-
-    let cost = u.cost(player.shark_upg[i]), curr = CURRENCIES[u.curr]
-
+    const u = SHARK_UPGRADES[i], curr_id = sbSharkUpgCurr(i)
+    if (tmp.su_locked[curr_id] || u.unl && !u.unl() || u.req && !u.req()) return;
+    let cost = getSharkUpgradeCost(i), curr = CURRENCIES[curr_id]
     if (curr.amount.gte(cost)) {
-        if (!tmp.su_el[u.curr]) curr.amount = curr.amount.sub(cost).max(0)
+        if (!tmp.su_el[curr_id]) curr.amount = curr.amount.sub(cost).max(0)
         player.shark_upg[i] = player.shark_upg[i].add(1)
     }
 }
 function buyMaxSharkUpgrade(i) {
-    const u = SHARK_UPGRADES[i]
-
-    if (tmp.su_locked[u.curr] || u.unl && !u.unl() || u.req && !u.req()) return;
-
-    let cost = u.cost(player.shark_upg[i]), curr = CURRENCIES[u.curr]
-
+    const u = SHARK_UPGRADES[i], curr_id = sbSharkUpgCurr(i)
+    if (tmp.su_locked[curr_id] || u.unl && !u.unl() || u.req && !u.req()) return;
+    let cost = getSharkUpgradeCost(i), curr = CURRENCIES[curr_id]
     if (curr.amount.gte(cost)) {
-        let bulk = u.bulk(curr.amount)
+        let bulk = getSharkUpgradeBulk(i, curr.amount)
         if (bulk.gt(player.shark_upg[i])) {
             player.shark_upg[i] = bulk
-            if (!tmp.su_el[u.curr]) {
-                cost = u.cost(bulk.sub(1))
+            if (!tmp.su_el[curr_id]) {
+                cost = getSharkUpgradeCost(i, bulk.sub(1))
                 curr.amount = curr.amount.sub(cost).max(0)
             }
         }
     }
 }
-
 function buyAllSharkUpgrades(ii=[]) {
     ii.forEach(i=>buyMaxSharkUpgrade(i))
 }
@@ -465,7 +491,7 @@ function updateSharkTemp() {
         var lvl = player.shark_upg[i]
         if (['s1','s2','s3','s4'].includes(i)) lvl = lvl.mul(getCRBoost(2))
         if (['p1','p2','p3'].includes(i)) lvl = lvl.mul(getCRBoost(6))
-        tmp.shark_upg_eff[i] = v.effect(lvl)
+        tmp.shark_upg_eff[i] = getSharkUpgradeEffect(i, lvl)
     }
 
     tmp.shark_base = sharkUpgEffect('s2').add(2)
@@ -476,7 +502,10 @@ function updateSharkTemp() {
 
     let bonus_str = remnantUpgEffect(0)
 
-    for (let [i,v] of Object.entries(SHARK.bonuses)) tmp.shark_bonus[i] = v[0]() ? v[1](player.shark_level.mul(bonus_str)) : v[2]
+    for (let [i,v] of Object.entries(SHARK.bonuses)) {
+        tmp.shark_bonus[i] = v[0]() ? v[1](player.shark_level.mul(bonus_str)) : v[2]
+        if (sbHasFormula(sbFormula('bonus_' + i))) tmp.shark_bonus[i] = sbEval(sbFormula('bonus_' + i), sbGlobalVars({bonus: tmp.shark_bonus[i]}), tmp.shark_bonus[i])
+    }
 
     bonus_str = remnantUpgEffect(5)
 
@@ -523,12 +552,12 @@ function updateSharkUpgradesHTML() {
 
         if (!req) continue;
 
-        let cost = v.cost(amt)
+        let cost = getSharkUpgradeCost(i, amt), curr_id = sbSharkUpgCurr(i)
 
         el('su-'+i+'-level').textContent = amt.format(0)
 
-        el('su-'+i+'-cost').innerHTML = tmp.su_locked[v.curr] ? `Locked` : `${cost_text}: ${cost.format(0)} ${CURRENCIES[v.curr].costName}`
-        el('su-'+i+'-cost').className = el_classes({'shark-upgrade-button': true, locked: tmp.su_locked[v.curr] || CURRENCIES[v.curr].amount.lt(cost)})
+        el('su-'+i+'-cost').innerHTML = tmp.su_locked[curr_id] ? `Locked` : `${cost_text}: ${cost.format(0)} ${CURRENCIES[curr_id].costName}`
+        el('su-'+i+'-cost').className = el_classes({'shark-upgrade-button': true, locked: tmp.su_locked[curr_id] || CURRENCIES[curr_id].amount.lt(cost)})
 
         el('su-'+i+'-desc').innerHTML = lang_text('su-'+i+'-desc')+"<br>"+effect_text+": <b>"+v.effDesc(tmp.shark_upg_eff[i])+"</b>"
     }

@@ -84,6 +84,7 @@ LANGUAGES.PT = {
         // Tabs
 
         'tab-shark': toTextStyle('Tubarão','shark'),
+        'tab-sandbox': "🧪 Sandbox",
         'tab-options': "Opções",
         'tab-scalings': "Escalas",
         'tab-auto': "Automação",
