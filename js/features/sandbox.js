@@ -29,6 +29,7 @@
 */
 
 const SB_FORMULA_CACHE = {}
+const SB_ERRORS = {} // last evaluation error per formula code (shown in the Sandbox UI)
 
 function sb() {
     if (!player.sandbox || typeof player.sandbox != 'object') player.sandbox = {enabled: false, formulas: {}, sharkUpg: {}, research: {}, explore: {}}
@@ -36,6 +37,8 @@ function sb() {
     player.sandbox.sharkUpg ??= {}
     player.sandbox.research ??= {}
     player.sandbox.explore ??= {}
+    player.sandbox.free ??= {}
+    player.sandbox.speed ??= ""
     return player.sandbox
 }
 function sbEnabled() { return !!player.sandbox?.enabled }
@@ -71,8 +74,11 @@ function sbEval(code, vars = {}, def = E(0)) {
         if (fn.names.join() !== names.join()) fn = SB_FORMULA_CACHE[code] = {names, f: new Function(...names, `"use strict"; return (${code});`)}
         const out = fn.f(...names.map(n => n in SB_HELPERS ? SB_HELPERS[n] : vars[n]))
         const result = E(out ?? def)
-        return isNaN(result.mag) ? def : result
+        if (isNaN(result.mag)) { SB_ERRORS[code] = 'Result was NaN'; return def }
+        delete SB_ERRORS[code]
+        return result
     } catch (e) {
+        SB_ERRORS[code] = String(e?.message ?? e)
         return def
     }
 }
@@ -132,6 +138,7 @@ function sbSharkUpgCurr(id) {
     return sbEnabled() && c && CURRENCIES[c] ? c : SHARK_UPGRADES[id].curr
 }
 function getSharkUpgradeCost(id, lvl = player.shark_upg[id]) {
+    if (sbEnabled() && sb().free.sharkUpg) return E(0)
     const u = SHARK_UPGRADES[id], code = sbSharkUpg(id).cost
     if (!sbHasFormula(code)) return u.cost(lvl)
     return sbEval(code, {level: E(lvl), amt: E(lvl), ...sbGlobalVars()}, u.cost(lvl))
@@ -158,6 +165,7 @@ function sbResearchBaseCost(r, amt, max) {
     return E(c ?? EINF)
 }
 function getResearchCost(id, j, amt = player.research[id]) {
+    if (sbEnabled() && sb().free.research) return E(0)
     const r = RESEARCH[id].require[j], max = RESEARCH[id].max ?? 1
     const base = sbResearchBaseCost(r, amt, max)
     if (!sbEnabled()) return base
@@ -197,6 +205,7 @@ function getExploreMaxDepth(i) { return sbExploreNum(i, 'maxDepth', E(EXPLORE[i]
 function getExploreFishReq(i) { return sbExploreNum(i, 'fishReq', EXPLORE[i].fish_req) }
 function getExploreLevelReq(i) { return sbExploreNum(i, 'levelReq', E(EXPLORE[i].level_req)).toNumber() }
 function getExploreUpgradeCost(i, j, lvl = player.explore.upg[i][j]) {
+    if (sbEnabled() && sb().free.explore) return E(0)
     const cost = EXPLORE[i].cost[j], base = cost[0](lvl)
     const code = sbExplore(i)['cost' + j]
     if (!sbHasFormula(code)) return base
@@ -274,6 +283,43 @@ function sbImportSandbox() {
     })
 }
 
+/* ============================ Presets, tester, filtering ============================ */
+
+function sbFilter(input) {
+    const q = input.value.trim().toLowerCase(), section = input.closest('details')
+    if (!section) return
+    section.querySelectorAll('.sandbox-row').forEach(row => { row.style.display = !q || row.textContent.toLowerCase().includes(q) ? '' : 'none' })
+}
+function sbTestFormula() {
+    const code = el('sb-test-input')?.value ?? '', out = el('sb-test-result')
+    if (!out) return
+    const was = sbEnabled(); if (!was) player.sandbox.enabled = true
+    const vars = sbGlobalVars({gain: E(100), base: E(100), cost: E(100), effect: E(2), bestFish: player.explore?.best_fish ?? E(0), fishReq: E('1e135'), req: E('1e135'), reqBase: E(10), scale: E(1), ocean: E(0)})
+    const result = sbEval(code, vars, E(0))
+    out.innerHTML = SB_ERRORS[code] ? `❌ <b>Error:</b> ${sbEsc(SB_ERRORS[code])} (in-game this formula would be ignored)` : `✅ Result with test values (level=${format(player.shark_level,0)}, gain/base/cost=100, effect=2): <b>${format(result)}</b>`
+    if (!was) player.sandbox.enabled = false
+}
+function sbPreset(name) {
+    const s = sb(); s.enabled = true
+    if (name == 'gains1000') for (let id of ['fishGain','prestigeGain','coreGain','remnantsGain','darkMatterGain','hadronGain']) s.formulas[id] = 'gain.mul(1000)'
+    if (name == 'cheap') { s.formulas.sharkCost = 'pow(2, level)'; for (let id in RESEARCH) (s.research[id] ??= {}).costMult = '0.001'; for (let id in SHARK_UPGRADES) (s.sharkUpg[id] ??= {}).cost = 'mul(pow(1.01, level), 10)' }
+    if (name == 'oceans') EXPLORE.forEach((x,i) => { const o = (s.explore[i] ??= {}); o.base = 'pow(10, 50)'; o.effectMult = '1000' })
+    if (name == 'free') s.free = {sharkUpg: true, research: true, explore: true}
+    if (name == 'unfree') s.free = {}
+    if (name == 'speed10') s.speed = '10'
+    if (name == 'speed1') s.speed = ''
+    setupSandboxHTML()
+    addNotify('Sandbox: preset applied — ' + name)
+}
+function sbToggleTreeNode(i, on) {
+    const t = player.humanoid.tree
+    player.humanoid.tree = on ? (t.includes(i) ? t : [...t, i]) : t.filter(x => x !== i)
+}
+function sbToggleStarter(i, on) {
+    const t = player.hadron.starter_upgs
+    player.hadron.starter_upgs = on ? (t.includes(i) ? t : [...t, i]) : t.filter(x => x !== i)
+}
+
 /* ============================ Sandbox UI ============================ */
 
 const SB_CURRENCY_CHOICES = ['fish','prestige','core','humanoid','remnants','dark-matter','hadron','coral','ice','salt','snow','kelp','stone','coal','iron','gold','platinum']
@@ -282,7 +328,7 @@ function sbFormulaInput(section, key, value, placeholder, sub) {
     const onchange = section == 'formulas'
         ? `player.sandbox.formulas['${key}']=this.value`
         : `sbEntry('${section}','${key.split('|')[0]}')['${key.split('|')[1]}']=this.value`
-    return `<input class="sandbox-input sandbox-formula" value="${sbEsc(value)}" placeholder="${sbEsc(placeholder)}" onchange="${onchange}" spellcheck="false">${sub ? `<div class="sandbox-sub">${sub}</div>` : ''}`
+    return `<input class="sandbox-input sandbox-formula" value="${sbEsc(value)}" placeholder="${sbEsc(placeholder)}" oninput="${onchange}" spellcheck="false">${sub ? `<div class="sandbox-sub">${sub}</div>` : ''}`
 }
 
 function setupSandboxHTML() {
@@ -301,6 +347,27 @@ function setupSandboxHTML() {
             <button class="big-btn" onclick="sbResetSandbox()">Clear all overrides</button>
         </div>
         <div id="sandbox-status" class="sandbox-status"></div>
+        <div class="sandbox-grid">
+            <label class="sandbox-field">⏩ Game speed multiplier (Sandbox only)<input class="sandbox-input" value="${sbEsc(s.speed)}" placeholder="1" oninput="player.sandbox.speed=this.value" spellcheck="false"><span class="sandbox-sub">e.g. 10 = game runs 10× faster. Empty = 1×.</span></label>
+            <label class="sandbox-field">🆓 Free purchases (no cost deducted)<span class="table-left" style="gap:10px">
+                <label><input type="checkbox" ${s.free.sharkUpg ? 'checked' : ''} onchange="sb().free.sharkUpg=this.checked"> Shark upgrades</label>
+                <label><input type="checkbox" ${s.free.research ? 'checked' : ''} onchange="sb().free.research=this.checked"> Research</label>
+                <label><input type="checkbox" ${s.free.explore ? 'checked' : ''} onchange="sb().free.explore=this.checked"> Exploration upgrades</label></span></label>
+        </div>
+        <div class="table-center">
+            <span style="margin:4px"><b>Presets:</b></span>
+            <button class="big-btn" onclick="sbPreset('gains1000')">🚀 ×1000 all gains</button>
+            <button class="big-btn" onclick="sbPreset('cheap')">💸 Cheap everything</button>
+            <button class="big-btn" onclick="sbPreset('oceans')">🌊 OP oceans</button>
+            <button class="big-btn" onclick="sbPreset('free')">🆓 Free purchases</button>
+            <button class="big-btn" onclick="sbPreset('unfree')">Un-free</button>
+            <button class="big-btn" onclick="sbPreset('speed10')">⏩ 10× speed</button>
+            <button class="big-btn" onclick="sbPreset('speed1')">1× speed</button>
+        </div>
+        <div class="sandbox-row"><b>🧮 Formula tester</b> — test any formula with your current level before using it:
+            <span class="table-left"><input class="sandbox-input sandbox-formula" id="sb-test-input" placeholder="e.g. pow(2, sharkLevel) * gain" spellcheck="false" style="flex:1"><button onclick="sbTestFormula()">Test</button></span>
+            <div class="sandbox-sub" id="sb-test-result">Result will appear here. Available: level, sharkLevel, fish, totalFish, gain, base, cost, effect, bestFish, fishReq, rank, tier, reqBase…</div>
+        </div>
         <details class="sandbox-help"><summary><b>Formula help — click to open</b></summary>
             <p>Formulas are JavaScript expressions using <b>Decimals</b>. Use helpers
             <code>add(a,b) sub mul div pow(a,b) root log10 log floor ceil max min pow10 exp slog</code> or Decimal methods
@@ -343,6 +410,7 @@ function setupSandboxHTML() {
     </details>
 
     <details class="sandbox-section"><summary>⬆️ Shark tab — Shark / Prestige / Mining upgrades (cost, effect, currency, level)</summary>
+        <input class="sandbox-input" placeholder="🔍 Filter upgrades… (applies instantly)" oninput="sbFilter(this)">
         ${Object.entries(SHARK_UPGRADES).map(([id,u]) => { const o = s.sharkUpg[id] ?? {}; return `
         <div class="sandbox-row"><div class="sandbox-row-head"><b>[${id}]</b> ${sbEsc(lang_text('su-'+id+'-name')?.replace(/<[^>]*>/g,'') ?? id)}
             <code>currency: ${u.curr}</code> <span class="sandbox-sub">Live cost: <span id="sb-live-su-cost-${id}">?</span> · effect: <span id="sb-live-su-eff-${id}">?</span></span></div>
@@ -352,10 +420,12 @@ function setupSandboxHTML() {
             </div>
             <label class="sandbox-field">Cost formula <code>vars: level, amt</code>${sbFormulaInput('sharkUpg', id+'|cost', o.cost, 'Original cost (empty = unchanged)')}</label>
             <label class="sandbox-field">Effect formula <code>vars: level, amt, effect (original)</code>${sbFormulaInput('sharkUpg', id+'|effect', o.effect, 'Original effect (empty = unchanged)')}</label>
+            <details class="sandbox-orig"><summary>View original cost / effect code</summary><pre>cost: ${sbEsc(u.cost.toString())}\nbulk: ${sbEsc(u.bulk.toString())}\neffect: ${sbEsc(u.effect.toString())}</pre></details>
         </div>` }).join('')}
     </details>
 
     <details class="sandbox-section"><summary>🔬 Research tab — every research: each cost &amp; its effect</summary>
+        <input class="sandbox-input" placeholder="🔍 Filter research… e.g. p3, core, kelp (applies instantly)" oninput="sbFilter(this)">
         ${Object.entries(RESEARCH).map(([id,r]) => { const o = s.research[id] ?? {}; return `
         <div class="sandbox-row"><div class="sandbox-row-head"><b>[${id}]</b> ${sbEsc((lang_text('all-research')?.[id]?.[0] ?? lang_text('research-'+id+'-name') ?? id).replace(/<[^>]*>/g,''))}
             <code>max: ${r.max ?? 1}${r.tier ? ' · tier '+r.tier : ''}</code> <span class="sandbox-sub">Live: <span id="sb-live-res-${id}">?</span></span></div>
@@ -366,10 +436,12 @@ function setupSandboxHTML() {
             ${r.require.map((req,j) => `<label class="sandbox-field">Cost ${j+1}: ${req[0]}${req[1] ? ' (total)' : ''} — plain number, or <code>=formula</code> <code>vars: level, amt, base</code>
                 <input class="sandbox-input sandbox-formula" value="${sbEsc((o.costs ?? [])[j])}" placeholder="Original: ${sbEsc(typeof req[2] == 'function' ? 'formula (level-based)' : String(req[2]))}" onchange="(sbResearch('${id}').costs??=[])[${j}]=this.value" spellcheck="false"></label>`).join('')}
             ${r.effect ? `<label class="sandbox-field">Effect formula <code>vars: level, amt, effect (original)</code>${sbFormulaInput('research', id+'|effect', o.effect, 'Original effect (empty = unchanged)')}</label>` : '<div class="sandbox-sub">No numeric effect (unlock / boolean research) — edit its costs above.</div>'}
+            <details class="sandbox-orig"><summary>View original cost / effect code</summary><pre>${sbEsc(r.require.map((req,j) => 'require['+j+'] ('+req[0]+'): ' + (typeof req[2] == 'function' ? req[2].toString() : String(req[2]))).join('\n') + (r.effect ? '\neffect: ' + r.effect.toString() : ''))}</pre></details>
         </div>` }).join('')}
     </details>
 
     <details class="sandbox-section"><summary>🌊 Exploration tab — every ocean: base gain, upgrades, depth &amp; requirements</summary>
+        <input class="sandbox-input" placeholder="🔍 Filter oceans…" oninput="sbFilter(this)">
         ${EXPLORE.map((x,i) => { const o = s.explore[i] ?? {}; return `
         <div class="sandbox-row"><div class="sandbox-row-head"><b>Ocean ${i}: ${sbEsc(lang_text('explore-'+i+'-name')?.replace(/<[^>]*>/g,'') ?? x.resource)}</b> <code>resource: ${x.resource}</code>
             <span class="sandbox-sub">Live base: <span id="sb-live-explore-${i}">?</span></span></div>
@@ -387,6 +459,7 @@ function setupSandboxHTML() {
             <label class="sandbox-field">Base gain formula <code>vars: bestFish, fishReq, sharkLevel, level — result becomes base/s (fed from best fish in this ocean)</code>${sbFormulaInput('explore', i+'|base', o.base, 'Original base-gain formula (empty = unchanged)', 'e.g. <code>pow(log10(bestFish), 2)</code>')}</label>
             <label class="sandbox-field">Upgrade 0 cost formula <code>vars: level, amt, base</code>${sbFormulaInput('explore', i+'|cost0', o.cost0, 'Original cost (empty = unchanged)')}</label>
             <label class="sandbox-field">Upgrade 1 cost formula <code>vars: level, amt, base</code>${sbFormulaInput('explore', i+'|cost1', o.cost1, 'Original cost (empty = unchanged)')}</label>
+            <details class="sandbox-orig"><summary>View original effect / cost code</summary><pre>effect: ${sbEsc(x.effect.toString())}\ncost0: ${sbEsc(x.cost[0][0].toString())}\ncost1: ${sbEsc(x.cost[1][0].toString())}</pre></details>
         </div>` }).join('')}
     </details>
 
@@ -401,6 +474,26 @@ function setupSandboxHTML() {
         ${Object.keys(NUCLEOBASES.ctn).map(id => `
             <label class="sandbox-field">${id} — experience-base level<input class="sandbox-input" type="number" step="1" value="${player.hadron.nucleobases[id]?.upg[0]?.toString() ?? 0}" onchange="sbSetLevel('nucleobase_base','${id}',this.value)"></label>
             <label class="sandbox-field">${id} — tier-upgrade level<input class="sandbox-input" type="number" step="1" value="${player.hadron.nucleobases[id]?.upg[1]?.toString() ?? 0}" onchange="sbSetLevel('nucleobase_tier','${id}',this.value)"></label>`).join('')}</div>
+        <h3>Singularity / Core Radiation state</h3><div class="sandbox-grid">
+            <label class="sandbox-field">Black Hole tier (singularity.bh)<input class="sandbox-input" value="${player.singularity.bh?.toString() ?? 0}" onchange="player.singularity.bh=E(this.value||0);player.singularity.best_bh=player.singularity.best_bh.max(player.singularity.bh)" spellcheck="false"></label>
+            <label class="sandbox-field">Constellation BH tier (bh_tier)<input class="sandbox-input" value="${player.singularity.bh_tier?.toString() ?? 0}" onchange="player.singularity.bh_tier=E(this.value||0)" spellcheck="false"></label>
+            <label class="sandbox-field">Radiation generation level<input class="sandbox-input" value="${player.core.radiation.gen?.toString() ?? 0}" onchange="player.core.radiation.gen=E(this.value||0)" spellcheck="false"></label>
+            <label class="sandbox-field">Radiation boost level<input class="sandbox-input" value="${player.core.radiation.boost?.toString() ?? 0}" onchange="player.core.radiation.boost=E(this.value||0)" spellcheck="false"></label>
+            <label class="sandbox-field">Prestige resets (times)<input class="sandbox-input" type="number" step="1" value="${player.prestige.times}" onchange="player.prestige.times=Math.max(0,Math.round(+this.value||0))"></label>
+            <label class="sandbox-field">Core resets (times)<input class="sandbox-input" type="number" step="1" value="${player.core.times}" onchange="player.core.times=Math.max(0,Math.round(+this.value||0))"></label>
+            <label class="sandbox-field">Evolution resets (times)<input class="sandbox-input" type="number" step="1" value="${player.humanoid.times}" onchange="player.humanoid.times=Math.max(0,Math.round(+this.value||0))"></label>
+            <label class="sandbox-field">Hadronize resets (times)<input class="sandbox-input" type="number" step="1" value="${player.hadron.times}" onchange="player.hadron.times=Math.max(0,Math.round(+this.value||0))"></label>
+        </div>
+        <h3>Forge levels</h3><div class="sandbox-grid">
+        ${FORGE_KEYS.map(id => `<label class="sandbox-field">[${id}] forge level<input class="sandbox-input" type="number" step="1" value="${player.humanoid.forge.level[id] ?? 0}" onchange="player.humanoid.forge.level['${id}']=Math.max(0,Math.round(+this.value||0))"></label>`).join('')}</div>
+        <h3>Rocket parts (Solar System)</h3><div class="sandbox-grid">
+        ${player.solar_system.rocket_parts.map((v,i) => `<label class="sandbox-field">Rocket part ${i}<input class="sandbox-input" value="${v?.toString() ?? 0}" onchange="player.solar_system.rocket_parts[${i}]=E(this.value||0)" spellcheck="false"></label>`).join('')}</div>
+        <h3>Automation — level &amp; on/off</h3><div class="sandbox-grid">
+        ${Object.keys(AUTOMATION).map(id => `<label class="sandbox-field">[${id}] level + active<span class="table-left"><input class="sandbox-input" type="number" step="1" value="${player.auto[id]?.[0] ?? 0}" onchange="player.auto['${id}'][0]=Math.max(0,Math.round(+this.value||0))"><input type="checkbox" ${player.auto[id]?.[1] ? 'checked' : ''} onchange="player.auto['${id}'][1]=this.checked"></span></label>`).join('')}</div>
+        <h3>Evolution Tree — normal nodes 0–${EVOLUTION_TREE.rows*4-1} (toggle)</h3><div class="sandbox-grid">
+        ${Array.from({length: EVOLUTION_TREE.rows*4}, (_,i) => `<label class="sandbox-field">Node ${i}<input type="checkbox" ${player.humanoid.tree.includes(i) ? 'checked' : ''} onchange="sbToggleTreeNode(${i}, this.checked)"></label>`).join('')}</div>
+        <h3>Hadron Starter Upgrades 0–${STARTER_UPGRADES_LENGTH-1} (toggle)</h3><div class="sandbox-grid">
+        ${Array.from({length: STARTER_UPGRADES_LENGTH}, (_,i) => `<label class="sandbox-field">Starter ${i}<input type="checkbox" ${player.hadron.starter_upgs.includes(i) ? 'checked' : ''} onchange="sbToggleStarter(${i}, this.checked)"></label>`).join('')}</div>
         <p class="sandbox-sub">For every other system (Evolution Tree, Forge, Automation, Singularity milestones, Solar System, …):
         use the <b>Resources</b>, <b>levels</b> and <b>Unlock everything</b> editors above — currency / level / unlock
         state is what gates all of those tabs, and the global gain formulas above scale their rewards.</p>
@@ -414,9 +507,11 @@ function updateSandboxHTML() {
     if (!status) return
     const s = sb()
     const count = obj => Object.values(obj ?? {}).reduce((n, v) => n + (typeof v == 'string' ? (v.trim() ? 1 : 0) : Object.values(v ?? {}).reduce((m, w) => m + (typeof w == 'string' && w.trim() ? 1 : 0) + (Array.isArray(w) ? w.filter(c => c?.trim()).length : 0), 0)), 0)
-    status.innerHTML = s.enabled
-        ? `Sandbox is <b>ON</b> — ${count(s.formulas) + count(s.sharkUpg) + count(s.research) + count(s.explore)} active override(s). Edits apply live and are stored in your save.`
-        : `Sandbox is <b>OFF</b> — overrides are saved but not applied. Turn it ON to use them.`
+    const errCount = Object.keys(SB_ERRORS).length
+    status.innerHTML = (s.enabled
+        ? `Sandbox is <b>ON</b> — ${count(s.formulas) + count(s.sharkUpg) + count(s.research) + count(s.explore)} active override(s)${s.speed ? ` · ⏩ ${sbEsc(s.speed)}× speed` : ''}. Edits apply live and are stored in your save.`
+        : `Sandbox is <b>OFF</b> — overrides are saved but not applied. Turn it ON to use them.`)
+        + (errCount && s.enabled ? `<br>⚠️ <b>${errCount} broken formula(s)</b> are being ignored (original formulas used instead):<br>` + Object.entries(SB_ERRORS).map(([c,e]) => `<code>${sbEsc(c.length > 60 ? c.slice(0,60) + '…' : c)}</code> — ${sbEsc(e)}`).join('<br>') : '')
     for (let id in CURRENCIES) { const e = el('sb-res-cur-' + id); if (e) e.textContent = format(CURRENCIES[id].amount, 0) }
     const live = (id, v) => { const e = el('sb-live-' + id); if (e) e.textContent = v }
     try {

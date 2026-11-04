@@ -15,7 +15,7 @@ function loop() {
     diff = Date.now()-date;
     updateOptions()
     updateHTML()
-    calc(diff/1000)
+    calc(diff/1000 * ((typeof sbEnabled == 'function' && sbEnabled()) ? (parseFloat(player.sandbox?.speed) || 1) : 1))
     date = Date.now()
 }
 
