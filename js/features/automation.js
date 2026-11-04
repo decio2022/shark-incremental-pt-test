@@ -262,6 +262,7 @@ function toggleAutomation(i) {
 }
 
 function isAutoEnabled(i) {
+    if (typeof hasLoopAutomation == 'function' && hasLoopAutomation(i)) return true
     return AUTOMATION[i].unl() && player.auto[i][1]
 }
 
@@ -302,7 +303,7 @@ function updateAutomationHTML() {
             let [I,D] = x.interval
             el(`auto-${i}-interval`).textContent = lang_text('auto-interval',Math.max(I*D**a[0],AUTO_MIN_INTERVAL),Math.max(I*D**(a[0]+1),AUTO_MIN_INTERVAL),maxed) // `Interval: ${format(Math.max(I*D**a[0],AUTO_MIN_INTERVAL),3)}s`+(maxed ? "" :` ➜ ${format(Math.max(I*D**(a[0]+1),AUTO_MIN_INTERVAL),3)}s`)
             
-            el(`auto-${i}-switch`).textContent = lang_text('off-on',a[1])
+            el(`auto-${i}-switch`).textContent = hasLoopAutomation(i) ? 'ALWAYS (Loop)' : lang_text('off-on',a[1])
 
             el(`auto-${i}-cost`).style.display = el_display(!maxed)
             if (!maxed) {

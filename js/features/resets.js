@@ -324,6 +324,24 @@ const RESETS = {
             RESETS.sacrifice.doReset()
         },
     },
+    loop: {
+        get require() { return LOOP.unlocked && player.fish.gte(LOOP.cost) },
+        reset(force) {
+            if (!force) {
+                player.loop.amount = player.loop.amount.add(1)
+                player.loop.times++
+            }
+
+            this.doReset()
+        },
+        doReset() {
+            // The layer above Hadronize: reset Fundamental Particles too, keep Loops & Loop Upgrades.
+            player.hadron.amount = E(0)
+            player.hadron.total = E(0)
+
+            RESETS.hadron.doReset()
+        },
+    },
 }
 
 function doReset(id, force, ...arg) {

@@ -17,7 +17,7 @@ function calc(dt) {
     
         for (let [i,v] of Object.entries(AUTOMATION)) {
             let a = player.auto[i], [I,D] = v.interval
-            if (a[1] && v.unl()) {
+            if (isAutoEnabled(i)) {
                 let s = Math.max(AUTO_MIN_INTERVAL,I*D**a[0])
                 let t = auto_time[i] + dt
                 if (t >= s) {

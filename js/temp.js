@@ -111,13 +111,14 @@ function updateTemp() {
     updateEvolutionTreeTemp()
     updateCoreTemp()
     updateExplorationTemp()
+    for (let i in tmp.depth_gain) tmp.depth_gain[i] = applyLoopGain(tmp.depth_gain[i])
     updateSharkTemp()
 
     var asu = []
     for (let [i,v] of Object.entries(AUTOMATION)) if ('su' in v && isAutoEnabled(i)) asu.push(...v.su)
     tmp.su_automated = asu
 
-    for (let [i,v] of Object.entries(CURRENCIES)) tmp.currency_gain[i] = preventNaNDecimal(v.gain??E(0))
+    for (let [i,v] of Object.entries(CURRENCIES)) tmp.currency_gain[i] = i == 'loop' ? preventNaNDecimal(v.gain??E(0)) : applyLoopGain(preventNaNDecimal(v.gain??E(0)))
 
     reloadOres();
 }

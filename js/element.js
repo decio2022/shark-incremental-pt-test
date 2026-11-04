@@ -25,6 +25,7 @@ function setupHTML() {
     setupScalingsTable()
     setupSharkHTML()
     setupSandboxHTML()
+    setupLoopHTML()
     setupTopCurrenciesHTML()
     setupAutomationHTML()
     setupResearchHTML()

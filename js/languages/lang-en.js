@@ -78,6 +78,8 @@ LANGUAGES.EN = {
 
         'curr-top-6-req': x => `Reach <b>${format(x)}</b> ${toTextStyle('Fish','fish')}`, 
         'curr-top-6-reset': (x,next) => `Hadronize for <b>${format(x,0)}</b> ${toTextStyle('Fundamental Particles','hadron')} (Next at <b>${format(next)}</b> ${toTextStyle('Fish','fish')})`,
+        'curr-top-7-req': x => `Reach <b>${format(x)}</b> ${toTextStyle('Fish','fish')} (and Hadronize once)`,
+        'curr-top-7-reset': x => `Loop for <b>+1</b> Loop (every gain ×3 per Loop, ^1.1 at 100 Loops) — cost never increases`,
         
         'radioactive-name': toTextStyle('Radiation '+icon("radioactive"),'core'),
 
@@ -85,6 +87,10 @@ LANGUAGES.EN = {
 
         'tab-shark': toTextStyle('Shark','shark'),
         'tab-sandbox': "🧪 Sandbox",
+        'tab-loop': "🔁 Loop",
+        'loop-name': "Loops",
+        'loop-costName': "Loops",
+        'confirm-loop': "Loop",
         'tab-options': "Options",
         'tab-scalings': "Scalings",
         'tab-auto': "Automation",
@@ -1052,6 +1058,14 @@ LANGUAGES.EN = {
             `
         },
         
+        get 'reset-loop-message'() {
+            return `
+            <h3>The Loop</h3><br>
+            The Loop is the reset layer beyond Hadronize. Looping resets everything Hadronize does, as well as Fundamental Particles, for <b>+1 Loop</b>. Each Loop multiplies <b>every gain by ×3</b>, and at <b>100 Loops</b> every gain is also raised to <b>^1.1</b>. The cost is always <b>ee10 Fish</b> and never increases. Loops can be spent on Loop Upgrades that keep parts of automation always on.<br>
+            Are you sure you want to loop?
+            `
+        },
+
         // Other
 
         'scalings': {

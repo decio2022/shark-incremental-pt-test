@@ -220,6 +220,13 @@ const TAB_IDS = {
     'shark-tier': {
         html: updateSharkTierHTML,
     },
+    'loop': {
+        html: updateLoopHTML,
+
+        notify() {
+            return LOOP.unlocked && player.fish.gte(LOOP.cost)
+        },
+    },
     'nucleobase': {
         html: updateNucleobasesHTML,
 
@@ -291,8 +298,8 @@ const TABS = [
             "color": "white",
             "animation": `cosmic-pattern 20s linear infinite`,
         },
-    },{ // 10
-        id: 'hadron',
+},{
+        id: 'hadron', // 10
         unl: ()=>player.hadron.times,
         stab: [
             ["hadron-su"],
@@ -302,6 +309,14 @@ const TABS = [
         style: {
             "background": `#ff8 repeating-conic-gradient(#0000 0 25%, #f802 0 50%)`,
             "backgroundSize": "200px 200px",
+            "animation": `cosmic-pattern 20s linear infinite`,
+        },
+    },{ // Loop — the final reset layer, after Hadronize
+        unl: ()=>player.hadron.times > 0 || player.loop.times > 0,
+        stab: "loop",
+        style: {
+            "background": `#c9f url('textures/cosmic-pattern.png')`,
+            "color": "black",
             "animation": `cosmic-pattern 20s linear infinite`,
         },
     },

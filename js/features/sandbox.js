@@ -215,6 +215,17 @@ function sbExploreHasCostOverride(i, j) { return sbHasFormula(sbExplore(i)['cost
 
 /* ============================ Sandbox actions ============================ */
 
+function sbSetLoopAmount(value, setTotal=true) {
+    try {
+        const v = E(String(value).trim() || '0'); if (isNaN(v.mag)) return
+        player.loop.amount = v.max(0)
+        if (setTotal) player.loop.times = Math.max(0, v.floor().toNumber())
+        addNotify('Sandbox: Loops set to ' + format(player.loop.amount, 0) + ' (total loops: ' + player.loop.times + ', boost ×' + format(LOOP.mult) + (LOOP.exp > 1 ? ' ^' + LOOP.exp : '') + ')')
+    } catch {}
+}
+function sbToggleLoopUpgrade(i, on) {
+    player.loop.upgs = on ? (player.loop.upgs.includes(i) ? player.loop.upgs : [...player.loop.upgs, i]) : player.loop.upgs.filter(x => x !== i)
+}
 function sbSetDecimal(path, value) {
     try {
         const v = E(String(value).trim() || '0')
@@ -520,6 +531,7 @@ function setupSandboxHTML() {
             ${[['shark_level','Shark Level'],['shark_rank','Shark Rank'],['shark_tier','Shark Tier'],['humanoid.mining_tier','Mining Tier'],['humanoid.mining_ascend','Mining Ascension']].map(([p,n]) => `
             <label class="sandbox-field">${n}<span class="table-left"><input class="sandbox-input" id="sb-stat-${p}" value="${sbEsc((p.split('.').reduce((o,k)=>o?.[k],player))?.toString?.() ?? '')}" onchange="sbSetDecimal('${p}',this.value)"><button onclick="sbSetDecimal('${p}',el('sb-stat-${p}').value)">Set</button></span></label>`).join('')}
             <label class="sandbox-field">Feature progression (unlocks tabs, 0–23)<span class="table-left"><input class="sandbox-input" type="number" min="0" max="23" step="1" value="${player.feature}" onchange="player.feature=Math.max(0,Math.min(23,Math.round(+this.value||0)))"><button onclick="player.feature=23">Max</button></span></label>
+            <label class="sandbox-field">🔁 Loops (amount = total loops; sets boost ×3^loops, ^1.1 at 100+)<span class="table-left"><input class="sandbox-input" id="sb-loop-amount" value="${player.loop.amount?.toString() ?? 0}"><button onclick="sbSetLoopAmount(el('sb-loop-amount').value)">Set Loops</button></span><span class="sandbox-sub">Total loops: <span id="sb-loop-total">${player.loop.times}</span> · spendable: ${format(player.loop.amount,0)}</span></label>
             <label class="sandbox-field">Oceans unlocked (0–${EXPLORE.length})<span class="table-left"><input class="sandbox-input" type="number" min="0" max="${EXPLORE.length}" step="1" value="${player.explore.unl}" onchange="player.explore.unl=Math.max(0,Math.min(${EXPLORE.length},Math.round(+this.value||0)))"><button onclick="player.explore.unl=${EXPLORE.length}">All</button></span></label>
         </div>
     </details>
@@ -628,6 +640,8 @@ function setupSandboxHTML() {
         <p class="sandbox-sub">For every other system (Evolution Tree, Forge, Automation, Singularity milestones, Solar System, …):
         use the <b>Resources</b>, <b>levels</b> and <b>Unlock everything</b> editors above — currency / level / unlock
         state is what gates all of those tabs, and the global gain formulas above scale their rewards.</p>
+        <h3>🔁 Loop Upgrades (toggle — normally bought with Loops in the Loop tab)</h3><div class="sandbox-grid">
+        ${LOOP_UPGRADES.map((u,i) => `<label class="sandbox-field">[${i}] ${sbEsc(u.name)} — automates: ${u.auto.join(', ')}<input type="checkbox" ${hasLoopUpgrade(i) ? 'checked' : ''} onchange="sbToggleLoopUpgrade(${i}, this.checked)"></label>`).join('')}</div>
         <h3>⚠️ Advanced — raw player editor (edit ANY value by path)</h3>
         <div class="sandbox-grid">
             <label class="sandbox-field">Path (e.g. humanoid.mining_tier, explore.unl, singularity.bh)<input class="sandbox-input" id="sb-raw-path" placeholder="shark_level" spellcheck="false"></label>
@@ -654,6 +668,7 @@ function updateSandboxHTML() {
         : `Sandbox is <b>OFF</b> — overrides are saved but not applied. Turn it ON to use them.`)
         + (errCount && s.enabled ? `<br>⚠️ <b>${errCount} broken formula(s)</b> are being ignored (original formulas used instead):<br>` + Object.entries(SB_ERRORS).map(([c,e]) => `<code>${sbEsc(c.length > 60 ? c.slice(0,60) + '…' : c)}</code> — ${sbEsc(e)}`).join('<br>') : '')
     for (let id in CURRENCIES) { const e = el('sb-res-cur-' + id); if (e) e.textContent = format(CURRENCIES[id].amount, 0) }
+    { const e = el('sb-loop-total'); if (e) e.textContent = player.loop.times + ' (boost ×' + format(LOOP.mult) + (LOOP.exp > 1 ? ', ^' + LOOP.exp : '') + ')' }
     const live = (id, v) => { const e = el('sb-live-' + id); if (e) e.textContent = v }
     try {
         live('sharkCost', format(SHARK.cost(), 0) + ' Fish')

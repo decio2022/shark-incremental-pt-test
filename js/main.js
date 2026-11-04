@@ -55,6 +55,12 @@ const TOP_CURR = [
         curr: "hadron",
         req: ()=>player.fish.gte(CURRENCIES.hadron.require),
     },
+    {
+        unl: ()=>player.hadron.times > 0 || player.loop.times > 0,
+        reset: "loop",
+        curr: "loop",
+        req: ()=>player.fish.gte(LOOP.cost),
+    },
 ]
 
 const PROGRESS = [
@@ -175,4 +181,5 @@ const CONFIRMATIONS = {
     'black-hole': [()=>player.singularity.first],
     sacrifice: [()=>player.singularity.sac_times>0],
     hadron: [()=>player.hadron.times>0],
+    loop: [()=>player.loop.times>0],
 }

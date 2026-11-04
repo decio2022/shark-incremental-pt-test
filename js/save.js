@@ -116,6 +116,12 @@ function getPlayerData() {
             nucleobases: {},
         },
 
+        loop: {
+            amount: E(0),
+            times: 0,
+            upgs: [],
+        },
+
         radios: {},
 
         sandbox: {
