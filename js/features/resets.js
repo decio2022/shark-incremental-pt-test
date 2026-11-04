@@ -325,8 +325,10 @@ const RESETS = {
         },
     },
     loop: {
-        get require() { return LOOP.unlocked && player.fish.gte(LOOP.cost) },
+        get require() { return LOOP.canLoop },
         reset(force) {
+            if (!force && tmp.bh_pause) return
+            normalizeLoopPlayer()
             if (!force) {
                 player.loop.amount = player.loop.amount.add(1)
                 player.loop.times++

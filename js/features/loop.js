@@ -4,24 +4,62 @@
     Costs a flat ee10 Fish (never increases). Each Loop multiplies EVERY
     gain by ×3 (based on total Loops), and at 100+ total Loops every gain
     is additionally raised to ^1.1.
+
+    All access goes through the coercion helpers below (loopTimes /
+    loopAmount / loopUpgs / normalizeLoopPlayer) so that a missing,
+    null, string, Decimal or otherwise malformed `player.loop` — e.g.
+    from an imported save, the Sandbox raw editor, or an older save —
+    can never throw inside the per-frame game loop and freeze the game.
 */
+
+function loopTimes() {
+    try {
+        const t = E(player.loop?.times ?? 0)
+        if (isNaN(t.mag)) return 0
+        return Math.max(0, Math.min(1e6, Math.floor(t.toNumber())))
+    } catch { return 0 }
+}
+function loopAmount() {
+    try {
+        const a = E(player.loop?.amount ?? 0)
+        return isNaN(a.mag) ? E(0) : a.max(0)
+    } catch { return E(0) }
+}
+function loopUpgs() {
+    const u = player.loop?.upgs
+    if (!Array.isArray(u)) return []
+    return u.filter(i => Number.isInteger(i) && i >= 0 && i < LOOP_UPGRADES.length)
+}
+/** Repair player.loop in place so every other system can trust its shape. */
+function normalizeLoopPlayer() {
+    if (!player.loop || typeof player.loop != 'object') player.loop = {amount: E(0), times: 0, upgs: []}
+    player.loop.times = loopTimes()
+    player.loop.amount = loopAmount()
+    player.loop.upgs = loopUpgs()
+    return player.loop
+}
 
 const LOOP = {
     cost: E('ee10'), // flat, never increases
-    get unlocked() { return player.hadron.times > 0 || player.loop.times > 0 },
-    get total() { return player.loop.times },
-    get amount() { return player.loop.amount },
-    get mult() { return Decimal.pow(3, player.loop.times) },
-    get exp() { return player.loop.times >= 100 ? 1.1 : 1 },
+    get unlocked() { return (player.hadron?.times ?? 0) > 0 || loopTimes() > 0 },
+    get canLoop() { return this.unlocked && !tmp.bh_pause && player.fish.gte(this.cost) },
+    get total() { return loopTimes() },
+    get amount() { return loopAmount() },
+    get mult() { return Decimal.pow(3, loopTimes()) },
+    get exp() { return loopTimes() >= 100 ? 1.1 : 1 },
 }
 
-/** Apply the Loop boost to any gain: ×3 per total Loop, then ^1.1 at 100+ Loops. */
+/** Apply the Loop boost to any gain: ×3 per total Loop, then ^1.1 at 100+ Loops. Never returns NaN. */
 function applyLoopGain(x) {
-    x = E(x ?? 0)
-    if (player.loop.times <= 0 || x.lte(0)) return x
-    x = x.mul(LOOP.mult)
-    if (LOOP.exp > 1) x = x.pow(LOOP.exp)
-    return x
+    try { x = E(x ?? 0) } catch { return E(0) }
+    if (isNaN(x.mag)) return E(0)
+    const times = loopTimes()
+    if (times <= 0 || x.lte(0)) return x
+    try {
+        x = x.mul(LOOP.mult)
+        if (LOOP.exp > 1) x = x.pow(LOOP.exp)
+        return isNaN(x.mag) ? E(0) : x
+    } catch { return E(0) }
 }
 
 const LOOP_UPGRADES = [
@@ -33,44 +71,53 @@ const LOOP_UPGRADES = [
     { name: "Eternal Everything Else", desc: "Humanoid Sharks, Remnant Upgrades, Sharkoid Faith, Evolution Tree and Rocket Part automations are always automated.", cost: 12, auto: ['humanoid','remnant','faith','evolution_tree','rocket_part'] },
 ]
 
-function hasLoopUpgrade(i) { return player.loop.upgs.includes(i) }
+function hasLoopUpgrade(i) { return loopUpgs().includes(i) }
 function hasLoopAutomation(autoId) { return LOOP_UPGRADES.some((u,i) => hasLoopUpgrade(i) && u.auto.includes(autoId)) }
 
 function buyLoopUpgrade(i) {
     const u = LOOP_UPGRADES[i]
-    if (hasLoopUpgrade(i) || player.loop.amount.lt(u.cost)) return
-    player.loop.amount = player.loop.amount.sub(u.cost)
+    if (!u || hasLoopUpgrade(i)) return
+    normalizeLoopPlayer()
+    if (player.loop.amount.lt(u.cost)) return
+    player.loop.amount = player.loop.amount.sub(u.cost).max(0)
     player.loop.upgs.push(i)
 }
 
 // Loop is a currency too (spendable amount), so it shows up in the Sandbox resource editor.
 CURRENCIES.loop = {
     get require() { return LOOP.cost },
-    get amount() { return player.loop.amount },
-    set amount(v) { player.loop.amount = v.max(0) },
-    get total() { return E(player.loop.times) },
+    get amount() { return loopAmount() },
+    set amount(v) { normalizeLoopPlayer(); player.loop.amount = E(v ?? 0).max(0) },
+    get total() { return E(loopTimes()) },
     set total(v) { /* total loops are tracked in player.loop.times */ },
     get gain() { return E(0) },
 }
 
 function setupLoopHTML() {
-    el('loop-upgrades').innerHTML = LOOP_UPGRADES.map((u,i) => `
+    const root = el('loop-upgrades')
+    if (!root) return
+    normalizeLoopPlayer()
+    root.innerHTML = LOOP_UPGRADES.map((u,i) => `
         <button class="remnant-upg" id="loop-upg-${i}" onclick="buyLoopUpgrade(${i})">
             <b>${u.name}</b><br>${u.desc}<br><span id="loop-upg-${i}-cost">Cost: ${u.cost} Loop</span>
         </button>`).join("")
 }
 
 function updateLoopHTML() {
-    el('loop-info').innerHTML = `You have looped <h3>${format(player.loop.times,0)}</h3> time(s) and have <h3>${format(player.loop.amount,0)}</h3> Loop(s) to spend.<br>
+    const info = el('loop-info'), button = el('loop-button')
+    if (!info || !button) return
+    normalizeLoopPlayer()
+    info.innerHTML = `You have looped <h3>${format(loopTimes(),0)}</h3> time(s) and have <h3>${format(loopAmount(),0)}</h3> Loop(s) to spend.<br>
     Every gain is multiplied by <b>×${format(LOOP.mult)}</b> (×3 per Loop)${LOOP.exp > 1 ? ` and raised to <b>^${LOOP.exp}</b> (100+ Loops!)` : `.<br>Reach <b>100</b> Loops to also raise every gain to <b>^1.1</b>`}.`
-    el('loop-button').innerHTML = LOOP.unlocked
+    button.innerHTML = LOOP.unlocked
         ? (player.fish.gte(LOOP.cost) ? `Loop! Reset everything Hadronize does (and Fundamental Particles) for +1 Loop.<br>Cost: ${format(LOOP.cost,0)} Fish (never increases)` : `Reach ${format(LOOP.cost,0)} Fish to Loop.`)
         : `Reach Fundamental Particles (Hadronize once) to unlock Looping.`
-    el('loop-button').className = el_classes({locked: !LOOP.unlocked || player.fish.lt(LOOP.cost), 'huge-btn': true})
+    button.className = el_classes({locked: !LOOP.canLoop, 'huge-btn': true})
     LOOP_UPGRADES.forEach((u,i) => {
-        const b = el('loop-upg-'+i); if (!b) return
+        const b = el('loop-upg-'+i), c = el('loop-upg-'+i+'-cost')
+        if (!b || !c) return
         const owned = hasLoopUpgrade(i)
-        b.className = el_classes({'remnant-upg': true, bought: owned, locked: !owned && player.loop.amount.lt(u.cost)})
-        el('loop-upg-'+i+'-cost').textContent = owned ? 'Owned — always automated!' : `Cost: ${u.cost} Loop`
+        b.className = el_classes({'remnant-upg': true, bought: owned, locked: !owned && loopAmount().lt(u.cost)})
+        c.textContent = owned ? 'Owned — always automated!' : `Cost: ${u.cost} Loop`
     })
 }

@@ -243,7 +243,7 @@ function updateCoreRadiation() {
 }
 
 function updateCoreRadiationTemp() {
-    tmp.cr_gain = CORE_RAD.gain()
+    tmp.cr_gain = applyLoopGain(CORE_RAD.gain())
     tmp.cr_limit = CORE_RAD.limit()
 
     var temp_eff = tmp.core_temp_eff = getCoreTemperatureEffect()
