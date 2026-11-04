@@ -118,6 +118,14 @@ function getPlayerData() {
 
         radios: {},
 
+        sandbox: {
+            enabled: false,
+            formulas: {},
+            sharkUpg: {},
+            research: {},
+            explore: {},
+        },
+
         auto: {},
         feature: 0,
 

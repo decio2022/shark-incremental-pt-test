@@ -31,7 +31,7 @@ function calc(dt) {
     
         if (player.feature >= 4) {
             let u = player.explore.unl
-            if (EXPLORE[u] && player.shark_level.gte(EXPLORE[u].level_req)) player.explore.unl++
+            if (EXPLORE[u] && player.shark_level.gte(getExploreLevelReq(u))) player.explore.unl++
     
             if (player.explore.active > -1) player.explore.best_fish = player.explore.best_fish.max(player.fish)
     
@@ -42,7 +42,7 @@ function calc(dt) {
                 i = parseInt(i)
                 if (u > i) {
                     var c = calcNextDepth(player.explore.depth[i], tmp.depth_gain[i].mul(dt), i)
-                    if (i >= 4 || !hasEvolutionTree(i+8)) if (i < 4 || !research_e6) c = c.min(EXPLORE[i].maxDepth)
+                    if (i >= 4 || !hasEvolutionTree(i+8)) if (i < 4 || !research_e6) c = c.min(getExploreMaxDepth(i))
                     player.explore.depth[i] = c
                 }
                 if (auto_e > i) player.explore.base[i] = player.explore.base[i].max(getBaseExploration(i,player.fish))

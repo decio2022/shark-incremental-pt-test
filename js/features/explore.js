@@ -137,7 +137,11 @@ function getResourceOtherMult(i) {
 
 function getBaseExploration(i=player.explore.active,amt=player.explore.best_fish) {
     if (tmp.ss_difficulty) return E(0);
-    let req = EXPLORE[i]?.fish_req??EINF
+    let req = i in EXPLORE ? getExploreFishReq(i) : EINF
+    if (i in EXPLORE && sbHasFormula(sbExplore(i).base)) {
+        const original = (() => { let x = amt.div(req); if (x.lt(1)) return E(0); x = i == 4 ? x.log10().div(100).add(1).pow(2) : x.log10().add(1).pow(2); if (hasDepthMilestone(3,0)) x = x.mul(10); return x.mul(remnantUpgEffect(1)) })()
+        return sbEval(sbExplore(i).base, {bestFish: E(amt), amt: E(amt), fishReq: req, req, ocean: E(i), ...sbGlobalVars()}, original)
+    }
     let x = amt.div(req)
     if (x.lt(1)) return E(0)
     x = i == 4 ? x.log10().div(100).add(1).pow(2) : x.log10().add(1).pow(2)
@@ -211,9 +215,14 @@ function enterExploration(i) {
 function buyExploreUpgrade(i,j) {
     if (player.feature < 4) return;
     if (player.explore.unl <= i) return
-
     var amt = player.explore.upg[i][j]
     var E = EXPLORE[i], cost = E.cost[j], curr = j == 1 ? player.explore.res[i] : CURRENCIES[cost[2]].amount
+    if (sbExploreHasCostOverride(i,j)) {
+        let guard = 0, lvl = amt
+        while (curr.gte(getExploreUpgradeCost(i,j,lvl)) && guard++ < 1000) lvl = lvl.add(1)
+        if (lvl.gt(amt)) player.explore.upg[i][j] = lvl
+        return
+    }
     if (curr.gte(cost[0](amt))) {
         var bulk = cost[1](curr)
         player.explore.upg[i][j] = bulk.gt(amt) ? bulk : amt.add(1)
@@ -264,7 +273,7 @@ function updateExplorationHTML() {
             let b = player.explore.base[i]
             if (i == a) {
                 let bb = getBaseExploration(i)
-                el(el_id+'explore').innerHTML = lang_text('explore-inside',b,bb,x.fish_req)
+                el(el_id+'explore').innerHTML = lang_text('explore-inside',b,bb,getExploreFishReq(i))
                 //`Base ${b.format()}/s`+(bb.gt(b) ? " ➜ " : " ~ ")+`${bb.format()}/s`+`.<br>Reach ${format(x.fish_req,0)} best ${fish_text}.`
             }
             else el(el_id+'explore').innerHTML = lang_text("explore-outside",b)
@@ -275,15 +284,15 @@ function updateExplorationHTML() {
             el(el_id+'effect').innerHTML = x.effDesc(tmp.explore_eff[i])
 
             let depth = player.explore.depth[i]
-            el(el_id+'depth').innerHTML = depth.format() + "m / " + format(x.maxDepth,0) + "m " + depth.formatGain(calcNextDepth(depth,tmp.depth_gain[i].div(FPS),i).sub(depth).mul(FPS))
+            el(el_id+'depth').innerHTML = depth.format() + "m / " + format(getExploreMaxDepth(i),0) + "m " + depth.formatGain(calcNextDepth(depth,tmp.depth_gain[i].div(FPS),i).sub(depth).mul(FPS))
 
             var cost_el = el(el_id+'cost1'), costs = x.cost[0], upgs = player.explore.upg[i]
             
-            var amount = upgs[0], cost = costs[0](amount), res_curr = CURRENCIES[costs[2]]
+            var amount = upgs[0], cost = getExploreUpgradeCost(i,0,amount), res_curr = CURRENCIES[costs[2]]
             cost_el.innerHTML = `${lang_text("explore-doubler-1",text_curr)} [${amount.format(0)}]<br>${texts[0]}: ${cost.format(0)} ${res_curr.costName}`
             cost_el.className = el_classes({"explore-cost": true, locked: res_curr.amount.lt(cost)})
 
-            cost_el = el(el_id+'cost2'), costs = x.cost[1], amount = upgs[1], cost = costs[0](amount)
+            cost_el = el(el_id+'cost2'), costs = x.cost[1], amount = upgs[1], cost = getExploreUpgradeCost(i,1,amount)
             cost_el.innerHTML = `${texts[1]} [${amount.format(0)}]<br>${texts[0]}: ${cost.format(0)} ${text_curr}`
             cost_el.className = el_classes({"explore-cost": true, locked: res.lt(cost)})
 
@@ -294,7 +303,7 @@ function updateExplorationHTML() {
         }
     })
 
-    el("next-explore").innerHTML = player.explore.unl < EXPLORE.length ? lang_text("explore-next",EXPLORE[player.explore.unl].level_req) : ""
+    el("next-explore").innerHTML = player.explore.unl < EXPLORE.length ? lang_text("explore-next",getExploreLevelReq(player.explore.unl)) : ""
 }
 
 function updateExplorationTemp() {
@@ -302,6 +311,8 @@ function updateExplorationTemp() {
 
     EXPLORE.forEach((x,i)=>{
         tmp.explore_eff[i] = x.effect(player.explore.unl > i ? player.explore.res[i] : E(0), player.explore.depth[i])
+        let eff_mult = sbExploreNum(i, 'effectMult', E(1))
+        if (eff_mult.neq(1)) tmp.explore_eff[i] = Array.isArray(tmp.explore_eff[i]) ? [tmp.explore_eff[i][0].mul(eff_mult), tmp.explore_eff[i][1]] : tmp.explore_eff[i].mul(eff_mult)
 
         let upg = player.explore.upg[i]
         tmp.explore_upg_boost[i] = [Decimal.pow(2,upg[0]), Decimal.pow(2,upg[1])]
